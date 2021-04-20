@@ -1,0 +1,16 @@
+<wiidisc version="1" root="patches">
+  <id game="NONE"/>
+	<region type="NONE"/>
+  <options>
+    <section name="My Hack Page">
+      <option name="Enable My Hack?">
+        <choice name="Enabled">
+          <patch id="MyPatch"/>
+        </choice>
+      </option>
+    </section>
+  </options>
+  <patch id="MyPatch">
+    <folder disc="/" external="/MyHack/"/>
+  </patch>
+</wiidisc>

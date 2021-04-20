@@ -8,9 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
-namespace RiivoAutoBuilder.Properties
-{
+namespace RiivoAutoBuilder.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -18,52 +19,78 @@ namespace RiivoAutoBuilder.Properties
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources
-    {
-
+    internal class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if ((resourceMan == null))
-                {
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RiivoAutoBuilder.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Rii {
+            get {
+                object obj = ResourceManager.GetObject("Rii", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;wiidisc version=&quot;1&quot; root=&quot;patches&quot;&gt;
+        ///  &lt;id game=&quot;NONE&quot;/&gt;
+        ///	&lt;region type=&quot;NONE&quot;/&gt;
+        ///  &lt;options&gt;
+        ///    &lt;section name=&quot;My Hack Page&quot;&gt;
+        ///      &lt;option name=&quot;Enable My Hack?&quot;&gt;
+        ///        &lt;choice name=&quot;Enabled&quot;&gt;
+        ///          &lt;patch id=&quot;MyPatch&quot;/&gt;
+        ///        &lt;/choice&gt;
+        ///      &lt;/option&gt;
+        ///    &lt;/section&gt;
+        ///  &lt;/options&gt;
+        ///  &lt;patch id=&quot;MyPatch&quot;&gt;
+        ///    &lt;folder disc=&quot;/&quot; external=&quot;/MyHack/&quot;/&gt;
+        ///  &lt;/patch&gt;
+        ///&lt;/wiidisc&gt;.
+        /// </summary>
+        internal static string Template {
+            get {
+                return ResourceManager.GetString("Template", resourceCulture);
             }
         }
     }

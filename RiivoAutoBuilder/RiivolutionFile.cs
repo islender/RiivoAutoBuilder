@@ -72,6 +72,7 @@ namespace RiivoAutoBuilder
             {
                 xml.Save(newFilePath);
                 MessageBox.Show("Saving successful!");
+                changedSinceLastSave = false;
             }
             catch (NullReferenceException)
             {

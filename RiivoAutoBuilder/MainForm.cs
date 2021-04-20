@@ -30,10 +30,23 @@ namespace RiivoAutoBuilder
                 {
                     Console.WriteLine("Saved changes");
                     riivofile.Save();
+                    if (riivofile.ChangedSinceSave == false)
+                    {
+                        riivofile.LoadFromTemplate();
+                        riivofile.NewFilePath = null;
+                        riivofile.ChangedSinceSave = false;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 if (result == DialogResult.No) // no code because it will jump to the try catch statements
                 {
                     Console.WriteLine("Discarded changes");
+                    riivofile.LoadFromTemplate();
+                    riivofile.NewFilePath = null;
+                    riivofile.ChangedSinceSave = false;
                 }
                 if (result == DialogResult.Cancel) // if user presses "x" or "cancel"
                 {
@@ -41,18 +54,12 @@ namespace RiivoAutoBuilder
                     return;
                 }
             }
-            try
+            else
             {
                 riivofile.LoadFromTemplate();
                 riivofile.NewFilePath = null;
                 riivofile.ChangedSinceSave = false;
             }
-            catch
-            {
-                Console.WriteLine("Error, please try again");
-                return;
-            }
-
             #region Enable and disable several controls
             gameIDtextbox.Enabled = true;
 
