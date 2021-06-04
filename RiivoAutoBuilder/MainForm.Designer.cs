@@ -29,6 +29,7 @@ namespace RiivoAutoBuilder
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,30 +77,36 @@ namespace RiivoAutoBuilder
             this.id_plusbutton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.patchesBox = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.id_editbutton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
-            this.button8 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.button10 = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.button7 = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.button8 = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.button6 = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.button5 = new System.Windows.Forms.Button();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.button11 = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.button12 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.temptextbox = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.label13 = new System.Windows.Forms.Label();
+            this.traversebutton = new System.Windows.Forms.Button();
+            this.patchcountbutton = new System.Windows.Forms.Button();
+            this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -179,26 +186,27 @@ namespace RiivoAutoBuilder
             this.regionToolStripMenuItem,
             this.wiidiscRootToolStripMenuItem});
             this.gameIDToolStripMenuItem.Name = "gameIDToolStripMenuItem";
-            this.gameIDToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.gameIDToolStripMenuItem.Text = "Basic Properties";
+            this.gameIDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gameIDToolStripMenuItem.Text = "Global Properties";
+            this.gameIDToolStripMenuItem.Click += new System.EventHandler(this.gameIDToolStripMenuItem_Click);
             // 
             // gameIDToolStripMenuItem1
             // 
             this.gameIDToolStripMenuItem1.Name = "gameIDToolStripMenuItem1";
-            this.gameIDToolStripMenuItem1.Size = new System.Drawing.Size(140, 22);
+            this.gameIDToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.gameIDToolStripMenuItem1.Text = "GameID";
             // 
             // regionToolStripMenuItem
             // 
             this.regionToolStripMenuItem.Name = "regionToolStripMenuItem";
-            this.regionToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.regionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.regionToolStripMenuItem.Text = "Region";
             // 
             // wiidiscRootToolStripMenuItem
             // 
             this.wiidiscRootToolStripMenuItem.Name = "wiidiscRootToolStripMenuItem";
-            this.wiidiscRootToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
-            this.wiidiscRootToolStripMenuItem.Text = "Wiidisc Root";
+            this.wiidiscRootToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.wiidiscRootToolStripMenuItem.Text = "Root Folder";
             // 
             // toolsToolStripMenuItem
             // 
@@ -240,7 +248,8 @@ namespace RiivoAutoBuilder
             // 
             this.advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.wiidiscOptionsToolStripMenuItem,
-            this.cloningWIPToolStripMenuItem});
+            this.cloningWIPToolStripMenuItem,
+            this.preferencesToolStripMenuItem});
             this.advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
             this.advancedToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
             this.advancedToolStripMenuItem.Text = "Advanced";
@@ -248,14 +257,14 @@ namespace RiivoAutoBuilder
             // wiidiscOptionsToolStripMenuItem
             // 
             this.wiidiscOptionsToolStripMenuItem.Name = "wiidiscOptionsToolStripMenuItem";
-            this.wiidiscOptionsToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.wiidiscOptionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.wiidiscOptionsToolStripMenuItem.Text = "Wiidisc Options";
             // 
             // cloningWIPToolStripMenuItem
             // 
             this.cloningWIPToolStripMenuItem.Enabled = false;
             this.cloningWIPToolStripMenuItem.Name = "cloningWIPToolStripMenuItem";
-            this.cloningWIPToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.cloningWIPToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cloningWIPToolStripMenuItem.Text = "Macros [WIP]";
             // 
             // aboutToolStripMenuItem
@@ -292,6 +301,7 @@ namespace RiivoAutoBuilder
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.helpToolStripMenuItem.Text = "About";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // gameIDtextbox
             // 
@@ -303,7 +313,6 @@ namespace RiivoAutoBuilder
             this.gameIDtextbox.Name = "gameIDtextbox";
             this.gameIDtextbox.Size = new System.Drawing.Size(48, 20);
             this.gameIDtextbox.TabIndex = 7;
-            this.gameIDtextbox.TextChanged += new System.EventHandler(this.gameIDtextbox_TextChanged);
             // 
             // sectionBox
             // 
@@ -482,6 +491,7 @@ namespace RiivoAutoBuilder
             this.id_minusbutton.TabIndex = 37;
             this.id_minusbutton.Text = "-";
             this.id_minusbutton.UseVisualStyleBackColor = true;
+            this.id_minusbutton.Click += new System.EventHandler(this.PatchIDsMinusClicked);
             // 
             // id_plusbutton
             // 
@@ -492,6 +502,7 @@ namespace RiivoAutoBuilder
             this.id_plusbutton.TabIndex = 36;
             this.id_plusbutton.Text = "+";
             this.id_plusbutton.UseVisualStyleBackColor = true;
+            this.id_plusbutton.Click += new System.EventHandler(this.PatchIDsPlusClicked);
             // 
             // label5
             // 
@@ -511,14 +522,15 @@ namespace RiivoAutoBuilder
             this.patchesBox.Size = new System.Drawing.Size(283, 82);
             this.patchesBox.TabIndex = 28;
             // 
-            // button1
+            // id_editbutton
             // 
-            this.button1.Location = new System.Drawing.Point(118, 75);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(39, 23);
-            this.button1.TabIndex = 19;
-            this.button1.Text = "Edit";
-            this.button1.UseVisualStyleBackColor = true;
+            this.id_editbutton.Location = new System.Drawing.Point(118, 75);
+            this.id_editbutton.Name = "id_editbutton";
+            this.id_editbutton.Size = new System.Drawing.Size(39, 23);
+            this.id_editbutton.TabIndex = 19;
+            this.id_editbutton.Text = "Edit";
+            this.id_editbutton.UseVisualStyleBackColor = true;
+            this.id_editbutton.Click += new System.EventHandler(this.PatchIDsEditClicked);
             // 
             // button2
             // 
@@ -565,6 +577,33 @@ namespace RiivoAutoBuilder
             this.panel1.Size = new System.Drawing.Size(387, 98);
             this.panel1.TabIndex = 45;
             // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(334, 74);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(53, 23);
+            this.button9.TabIndex = 66;
+            this.button9.Text = "Down";
+            this.button9.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(334, 25);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(37, 13);
+            this.label11.TabIndex = 67;
+            this.label11.Text = "Move:";
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(334, 45);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(53, 23);
+            this.button10.TabIndex = 65;
+            this.button10.Text = "Up";
+            this.button10.UseVisualStyleBackColor = true;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.button7);
@@ -579,101 +618,6 @@ namespace RiivoAutoBuilder
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(387, 98);
             this.panel2.TabIndex = 46;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.button6);
-            this.panel3.Controls.Add(this.label9);
-            this.panel3.Controls.Add(this.button5);
-            this.panel3.Controls.Add(this.button4);
-            this.panel3.Controls.Add(this.label3);
-            this.panel3.Controls.Add(this.sectionBox);
-            this.panel3.Controls.Add(this.s_plusbutton);
-            this.panel3.Controls.Add(this.s_minusbutton);
-            this.panel3.Location = new System.Drawing.Point(4, 24);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(387, 98);
-            this.panel3.TabIndex = 47;
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.button1);
-            this.panel4.Controls.Add(this.patchIDBox);
-            this.panel4.Controls.Add(this.id_minusbutton);
-            this.panel4.Controls.Add(this.label1);
-            this.panel4.Controls.Add(this.id_plusbutton);
-            this.panel4.Location = new System.Drawing.Point(664, 27);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(157, 176);
-            this.panel4.TabIndex = 48;
-            // 
-            // panel5
-            // 
-            this.panel5.Controls.Add(this.button11);
-            this.panel5.Controls.Add(this.patchesBox);
-            this.panel5.Controls.Add(this.label12);
-            this.panel5.Controls.Add(this.label5);
-            this.panel5.Controls.Add(this.button12);
-            this.panel5.Controls.Add(this.p_plusbutton);
-            this.panel5.Controls.Add(this.p_minusbutton);
-            this.panel5.Location = new System.Drawing.Point(4, 351);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(387, 97);
-            this.panel5.TabIndex = 49;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(50, 451);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(249, 13);
-            this.label6.TabIndex = 50;
-            this.label6.Text = "Will add the PatchID selected from the Patch ID list";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(50, 473);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(257, 13);
-            this.label7.TabIndex = 51;
-            this.label7.Text = "Currently, non-existent PatchIDs will not automatically";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(50, 486);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(267, 13);
-            this.label8.TabIndex = 52;
-            this.label8.Text = "be removed from choices. Please remove them yourself";
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(334, 46);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(53, 23);
-            this.button5.TabIndex = 53;
-            this.button5.Text = "Up";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(334, 75);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(53, 23);
-            this.button6.TabIndex = 54;
-            this.button6.Text = "Down";
-            this.button6.UseVisualStyleBackColor = true;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(334, 26);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(37, 13);
-            this.label9.TabIndex = 61;
-            this.label9.Text = "Move:";
             // 
             // button7
             // 
@@ -702,32 +646,73 @@ namespace RiivoAutoBuilder
             this.button8.Text = "Up";
             this.button8.UseVisualStyleBackColor = true;
             // 
-            // button9
+            // panel3
             // 
-            this.button9.Location = new System.Drawing.Point(334, 74);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(53, 23);
-            this.button9.TabIndex = 66;
-            this.button9.Text = "Down";
-            this.button9.UseVisualStyleBackColor = true;
+            this.panel3.Controls.Add(this.button6);
+            this.panel3.Controls.Add(this.label9);
+            this.panel3.Controls.Add(this.button5);
+            this.panel3.Controls.Add(this.button4);
+            this.panel3.Controls.Add(this.label3);
+            this.panel3.Controls.Add(this.sectionBox);
+            this.panel3.Controls.Add(this.s_plusbutton);
+            this.panel3.Controls.Add(this.s_minusbutton);
+            this.panel3.Location = new System.Drawing.Point(4, 24);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(387, 98);
+            this.panel3.TabIndex = 47;
             // 
-            // label11
+            // button6
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(334, 25);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(37, 13);
-            this.label11.TabIndex = 67;
-            this.label11.Text = "Move:";
+            this.button6.Location = new System.Drawing.Point(334, 75);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(53, 23);
+            this.button6.TabIndex = 54;
+            this.button6.Text = "Down";
+            this.button6.UseVisualStyleBackColor = true;
             // 
-            // button10
+            // label9
             // 
-            this.button10.Location = new System.Drawing.Point(334, 45);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(53, 23);
-            this.button10.TabIndex = 65;
-            this.button10.Text = "Up";
-            this.button10.UseVisualStyleBackColor = true;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(334, 26);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(37, 13);
+            this.label9.TabIndex = 61;
+            this.label9.Text = "Move:";
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(334, 46);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(53, 23);
+            this.button5.TabIndex = 53;
+            this.button5.Text = "Up";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.id_editbutton);
+            this.panel4.Controls.Add(this.patchIDBox);
+            this.panel4.Controls.Add(this.id_minusbutton);
+            this.panel4.Controls.Add(this.label1);
+            this.panel4.Controls.Add(this.id_plusbutton);
+            this.panel4.Location = new System.Drawing.Point(664, 27);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(157, 176);
+            this.panel4.TabIndex = 48;
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.button11);
+            this.panel5.Controls.Add(this.patchesBox);
+            this.panel5.Controls.Add(this.label12);
+            this.panel5.Controls.Add(this.label5);
+            this.panel5.Controls.Add(this.button12);
+            this.panel5.Controls.Add(this.p_plusbutton);
+            this.panel5.Controls.Add(this.p_minusbutton);
+            this.panel5.Location = new System.Drawing.Point(4, 351);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(387, 97);
+            this.panel5.TabIndex = 49;
             // 
             // button11
             // 
@@ -756,11 +741,89 @@ namespace RiivoAutoBuilder
             this.button12.Text = "Up";
             this.button12.UseVisualStyleBackColor = true;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(50, 451);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(249, 13);
+            this.label6.TabIndex = 50;
+            this.label6.Text = "Will add the PatchID selected from the Patch ID list";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(50, 473);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(257, 13);
+            this.label7.TabIndex = 51;
+            this.label7.Text = "Currently, non-existent PatchIDs will not automatically";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(50, 486);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(267, 13);
+            this.label8.TabIndex = 52;
+            this.label8.Text = "be removed from choices. Please remove them yourself";
+            // 
+            // temptextbox
+            // 
+            this.temptextbox.Location = new System.Drawing.Point(516, 309);
+            this.temptextbox.Name = "temptextbox";
+            this.temptextbox.Size = new System.Drawing.Size(227, 20);
+            this.temptextbox.TabIndex = 53;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(513, 293);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(102, 13);
+            this.label13.TabIndex = 54;
+            this.label13.Text = "Enter property name";
+            // 
+            // traversebutton
+            // 
+            this.traversebutton.Location = new System.Drawing.Point(516, 340);
+            this.traversebutton.Name = "traversebutton";
+            this.traversebutton.Size = new System.Drawing.Size(111, 23);
+            this.traversebutton.TabIndex = 55;
+            this.traversebutton.Text = "Traverse <options>";
+            this.traversebutton.UseVisualStyleBackColor = true;
+            this.traversebutton.Click += new System.EventHandler(this.traversebutton_Click);
+            // 
+            // patchcountbutton
+            // 
+            this.patchcountbutton.Location = new System.Drawing.Point(516, 425);
+            this.patchcountbutton.Name = "patchcountbutton";
+            this.patchcountbutton.Size = new System.Drawing.Size(130, 23);
+            this.patchcountbutton.TabIndex = 56;
+            this.patchcountbutton.Text = "Show patches count";
+            this.patchcountbutton.UseVisualStyleBackColor = true;
+            this.patchcountbutton.Click += new System.EventHandler(this.patchcountbutton_Click);
+            // 
+            // preferencesToolStripMenuItem
+            // 
+            this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.preferencesToolStripMenuItem.Text = "Preferences";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(833, 518);
+            this.Controls.Add(this.patchcountbutton);
+            this.Controls.Add(this.traversebutton);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.temptextbox);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -841,7 +904,7 @@ namespace RiivoAutoBuilder
         private System.Windows.Forms.ToolStripMenuItem riivolutionDocumentationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem releasesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gitHubIssuesToolStripMenuItem;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button id_editbutton;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
@@ -868,6 +931,12 @@ namespace RiivoAutoBuilder
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.TextBox temptextbox;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button traversebutton;
+        private System.Windows.Forms.Button patchcountbutton;
+        private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
     }
 }
 

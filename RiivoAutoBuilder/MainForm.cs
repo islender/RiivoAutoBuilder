@@ -261,21 +261,54 @@ namespace RiivoAutoBuilder
         }
         #endregion
 
-        private void gameIDtextbox_TextChanged(object sender, EventArgs e)
+        #region PatchIDBox Event Handlers
+        private void PatchIDsMinusClicked(object sender, EventArgs e)
         {
-            try
-            {
-                riivofile.GameID = gameIDtextbox.Text;
-                riivofile.ChangedSinceSave = true;
-            }
-            catch
-            {
-                return;
-            }
 
         }
 
+        private void PatchIDsPlusClicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PatchIDsEditClicked(object sender, EventArgs e)
+        {
+            ListBox.SelectedObjectCollection test = patchIDBox.SelectedItems;
+            if (test.Count == 0)
+            {
+                return;
+            }
+            else
+            {
+                int temptt = patchIDBox.SelectedIndex;
+                string streng = temptextbox.Text; // gets text from within temp textbox 
+                 // parses patchid index and the name to change the patchid to
+            }
+        }
+        #endregion
+
         private void patchIDBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void traversebutton_Click(object sender, EventArgs e)
+        {
+            riivofile.StartOptionsTraversal();
+        }
+
+        private void patchcountbutton_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Credits: islender\nLicenses: MIT");
+        }
+
+        private void gameIDToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }

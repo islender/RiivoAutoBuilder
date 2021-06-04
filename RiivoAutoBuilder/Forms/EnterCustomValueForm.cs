@@ -26,7 +26,7 @@ namespace RiivoAutoBuilder.Forms
         {
 
         }
-        private string Return
+        private string Return()
         {
             string text = textBox1.Text;
             return textBox1.Text;

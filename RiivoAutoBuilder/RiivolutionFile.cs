@@ -19,6 +19,121 @@ namespace RiivoAutoBuilder
         public XmlNodeList patcheslist;
         #endregion
 
+        #region New nodes and traversal code
+        public List<string> section_collection = new List<string>();
+        public List<string> option_collection = new List<string>();
+        public List<string> choice_collection = new List<string>();
+        public List<string> patch_collection = new List<string>();
+        public List<string> patchid_collection = new List<string>();
+        // show how many of each node there are
+        public int section_;
+        public int option_;
+        public int choice_;
+        public int patch_;
+        public int patchid_;
+
+        public void StartOptionsTraversal()
+        {
+            section_ = 0;
+            option_ = 0;
+            choice_ = 0;
+            patch_ = 0;
+            TraverseOptions(options);
+        }
+        public void TraverseOptions(XmlNode node)
+        {
+            Console.WriteLine("one traversal:");
+            Console.WriteLine("child nodes? {0}",node.HasChildNodes);
+            if (node.HasChildNodes == true) // checks if current node has any children
+            {
+                XmlNodeList list = node.ChildNodes;
+                int count = list.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    TraverseOptions(list[i]);
+                }
+                
+                if (node.LocalName == "section") 
+                {
+                    Console.WriteLine("Adding section...");
+                    string nodename = GetFirstAttributeName(node);
+                    section_ += 1;
+                    section_collection.Add(nodename);
+                }
+                if (node.LocalName == "option")
+                {
+                    Console.WriteLine("Adding option...");
+                    string nodename = GetFirstAttributeName(node);
+                    option_ += 1;
+                    option_collection.Add(nodename);
+                }
+                if (node.LocalName == "choice")
+                {
+                    Console.WriteLine("Adding choice...");
+                    string nodename = GetFirstAttributeName(node);
+                    choice_ += 1;
+                    choice_collection.Add(nodename);
+                }
+                if (node.LocalName == "patch") 
+                {
+                    Console.WriteLine("Adding patch...");
+                    string nodename = GetFirstAttributeName(node);
+                    patch_ += 1;
+                    patch_collection.Add(nodename);
+                }
+                Console.WriteLine("section: {0} option: {1} choice: {2} patch: {3}", section_, option_, choice_, patch_);
+            }
+            else
+            {
+                if (node.LocalName == "section")
+                {
+                    Console.WriteLine("Adding section...");
+                    string nodename = GetFirstAttributeName(node);
+                    section_ += 1;
+                    section_collection.Add(nodename);
+                }
+                if (node.LocalName == "option")
+                {
+                    Console.WriteLine("Adding option...");
+                    string nodename = GetFirstAttributeName(node);
+                    option_ += 1;
+                    option_collection.Add(nodename);
+                }
+                if (node.LocalName == "choice")
+                {
+                    Console.WriteLine("Adding choice...");
+                    string nodename = GetFirstAttributeName(node);
+                    choice_ += 1;
+                    choice_collection.Add(nodename);
+                }
+                if (node.LocalName == "patch")
+                {
+                    Console.WriteLine("Adding patch...");
+                    string nodename = GetFirstAttributeName(node);
+                    Console.WriteLine("attribute name: {0}", nodename);
+                    patch_ += 1;
+                    patch_collection.Add(nodename);
+                }
+                Console.WriteLine("section: {0} option: {1} choice: {2} patch: {3}", section_, option_, choice_, patch_);
+            }
+            
+                
+        }
+
+        public string GetFirstAttributeName(XmlNode node)
+        {
+            XmlAttributeCollection attributes = node.Attributes;
+            Console.WriteLine(node.LocalName);
+            Console.WriteLine(attributes.Count);
+            XmlAttribute attrib = attributes[0];
+            string name = attrib.Value;
+            return name;
+
+        }
+
+        // public void EditTraversal(XmlNode node,int nodeindex,string nodename)
+        #endregion
+
         private string newFilePath;
         private bool changedSinceLastSave;
         private List<int> selectedIndexes = new List<int> { 0, 0, 0, 0, 0 }; // {section, option, choice, patch, patchid}
@@ -34,7 +149,6 @@ namespace RiivoAutoBuilder
             catch
             {
                 throw;
-                return;
             }
         }
         public void LoadXML(string filePath)
@@ -49,7 +163,6 @@ namespace RiivoAutoBuilder
             catch
             {
                 throw;
-                return;
             }
         }
         private void ReadXML()
@@ -61,7 +174,6 @@ namespace RiivoAutoBuilder
             this.patcheslist = wiidisc.SelectNodes("patch"); // get all <patch>es
             #endregion
         }
-
         public void UpdateSelectedIndex(int index, int value)
         {
             selectedIndexes.Insert(index, value);
@@ -293,5 +405,38 @@ namespace RiivoAutoBuilder
 
             }
         }
+
+    }
+
+    class WiidiscNode
+    {
+        public string version
+        {
+            get
+            {
+                return version;
+            }
+            set
+            {
+                this.version = value;
+            }
+        }
+        public string root
+        {
+            get
+            {
+                return root;
+            }
+            set
+            {
+                this.root = value;
+            }
+        }
+
+        public void Apply()
+        {
+            
+        }
+
     }
 }
