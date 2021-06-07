@@ -57,6 +57,7 @@ namespace RiivoAutoBuilder
             }
             catch
             {
+
                 throw;
             }
         }
@@ -100,22 +101,23 @@ namespace RiivoAutoBuilder
             }
             catch (NullReferenceException)
             {
-                MessageBox.Show("Error: Save directory not selected. Please choose 'Save As' first");
+                MessageBox.Show("Save directory not selected. Please choose 'Save As' first","Error");
                 return;
             }
             catch (ArgumentNullException)
             {
-                MessageBox.Show("Error: Save directory not selected. Please choose 'Save As' first");
+                MessageBox.Show("Save directory not selected. Please choose 'Save As' first","Error");
                 return;
             }
             catch
             {
-                MessageBox.Show("Error: Unknown error, please try again");
+                MessageBox.Show("Unknown error, please try again","Error");
                 return;
             }
         }
         #endregion
 
+        // Selected index stuff
         public void UpdateSelectedIndex(int index, int value)
         {
             selectedIndexes.Insert(index, value);
@@ -125,6 +127,15 @@ namespace RiivoAutoBuilder
             return selectedIndexes[index];
         }
 
+        // Debugging methods
+        public void PrintToConsole()
+        {
+            xml.Save(Console.Out);
+        }
+        //
+
+        // Tree traversal methods
+        [Obsolete]
         public string GetFirstAttributeName(XmlNode node)
         {
             XmlAttributeCollection attributes = node.Attributes;
@@ -135,15 +146,7 @@ namespace RiivoAutoBuilder
             return name;
 
         }
-
-        #region Debugging/testing methods
-        public void PrintToConsole()
-        {
-            xml.Save(Console.Out);
-        }
-        #endregion
-
-        #region Methods used for tree traversal
+        [Obsolete]
         public void StartOptionsTraversal()
         {
             section_count = 0;
@@ -152,6 +155,7 @@ namespace RiivoAutoBuilder
             patch_count = 0;
             TraverseOptions(options);
         }
+        [Obsolete]
         public void TraverseOptions(XmlNode node)
         {
             Console.WriteLine("one traversal:");
@@ -231,13 +235,15 @@ namespace RiivoAutoBuilder
 
 
         }
+        [Obsolete]
         public void EditTraversal(XmlNode node,int nodeindex,string nodename)
         {
 
         }
-        #endregion
+        //
 
-        #region Code for editing nodes and stuff
+
+        // Code for getting and editing nodes and stuff
         public XmlNode FindEditableNode(string nodetype)
         {
             if (nodetype == "section")
@@ -288,7 +294,6 @@ namespace RiivoAutoBuilder
             }
             
         }
-
         public void EditSelectedNodeName(string nodetype, string value)
         {
             XmlNode node = FindEditableNode(nodetype); // nodetype determines what the name of the node is for editing, example: patch or section
@@ -296,11 +301,16 @@ namespace RiivoAutoBuilder
             XmlNode attrib = attribs.Item(0);
             attrib.InnerText = value;
         }
+        public string GetSelectedNodeName(string nodetype)
+        {
+            XmlNode node = FindEditableNode(nodetype);
+            XmlAttributeCollection attribs = node.Attributes;
+            XmlNode attrib = attribs.Item(0);
+            return attrib.InnerText;
+        }
+        //
 
-
-        #endregion
-
-        #region Misc properties
+        // Misc properties
         public string NewFilePath
         {
             get
@@ -338,9 +348,8 @@ namespace RiivoAutoBuilder
                 root.Value = value;
             }
         }
-        #endregion
 
-        #region Properties and lists for other stuff
+        // Properties and lists for other stuff
         // stuff for manipulating id tag at top of xml document
         public string GameID
         {
@@ -416,9 +425,8 @@ namespace RiivoAutoBuilder
             }
             return regioncodes;
         }
-        #endregion
 
-        #region Get lists of main nodes to parse to groupBoxes and other controls
+        // Get lists of main nodes to parse to groupBoxes and other controls
         public List<string> GetSections()
         {
 
@@ -497,6 +505,6 @@ namespace RiivoAutoBuilder
             }
             return newlist;
         }
-        #endregion
     }
+
 }

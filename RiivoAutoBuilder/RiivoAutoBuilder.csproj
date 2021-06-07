@@ -82,6 +82,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RiivolutionFile.cs" />
+    <Compile Include="ThemeManager.cs" />
     <EmbeddedResource Include="Forms\EnterCustomValueForm.resx">
       <DependentUpon>EnterCustomValueForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -118,13 +119,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Debug\Templates\Template.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Rii.ico" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Templates\Template.xml" />
+    <Content Include="Templates\Template.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -70,10 +70,7 @@ namespace RiivoAutoBuilder
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.patchesBox = new System.Windows.Forms.ListBox();
-            this.temptextbox = new System.Windows.Forms.TextBox();
-            this.traversebutton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.choiceBox = new System.Windows.Forms.ListBox();
             this.propertiesGroupBox = new System.Windows.Forms.GroupBox();
@@ -85,11 +82,6 @@ namespace RiivoAutoBuilder
             this.japan = new System.Windows.Forms.CheckBox();
             this.korea = new System.Windows.Forms.CheckBox();
             this.gameidLabel = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.contextMenu.SuspendLayout();
             this.propertiesGroupBox.SuspendLayout();
@@ -277,7 +269,6 @@ namespace RiivoAutoBuilder
             this.gameIDtextbox.Name = "gameIDtextbox";
             this.gameIDtextbox.Size = new System.Drawing.Size(38, 20);
             this.gameIDtextbox.TabIndex = 7;
-            this.gameIDtextbox.TextChanged += new System.EventHandler(this.gameIDtextbox_TextChanged);
             // 
             // contextMenu
             // 
@@ -352,6 +343,7 @@ namespace RiivoAutoBuilder
             this.sectionBox.Name = "sectionBox";
             this.sectionBox.Size = new System.Drawing.Size(283, 82);
             this.sectionBox.TabIndex = 9;
+            this.sectionBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SectionBoxClicked);
             this.sectionBox.SelectedIndexChanged += new System.EventHandler(this.SectionBoxIndexChanged);
             // 
             // optionBox
@@ -363,6 +355,7 @@ namespace RiivoAutoBuilder
             this.optionBox.Name = "optionBox";
             this.optionBox.Size = new System.Drawing.Size(283, 82);
             this.optionBox.TabIndex = 10;
+            this.optionBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OptionBoxClicked);
             this.optionBox.SelectedIndexChanged += new System.EventHandler(this.OptionBoxIndexChanged);
             // 
             // patchIDBox
@@ -374,6 +367,7 @@ namespace RiivoAutoBuilder
             this.patchIDBox.Name = "patchIDBox";
             this.patchIDBox.Size = new System.Drawing.Size(112, 186);
             this.patchIDBox.TabIndex = 11;
+            this.patchIDBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PatchIDBoxClicked);
             this.patchIDBox.SelectedIndexChanged += new System.EventHandler(this.PatchIDBoxIndexChanged);
             // 
             // label1
@@ -421,44 +415,18 @@ namespace RiivoAutoBuilder
             this.patchesBox.Name = "patchesBox";
             this.patchesBox.Size = new System.Drawing.Size(283, 82);
             this.patchesBox.TabIndex = 28;
+            this.patchesBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PatchesBoxClicked);
             this.patchesBox.SelectedIndexChanged += new System.EventHandler(this.PatchesBoxIndexChanged);
-            // 
-            // temptextbox
-            // 
-            this.temptextbox.ContextMenuStrip = this.contextMenu;
-            this.temptextbox.Location = new System.Drawing.Point(462, 496);
-            this.temptextbox.Name = "temptextbox";
-            this.temptextbox.Size = new System.Drawing.Size(148, 20);
-            this.temptextbox.TabIndex = 53;
-            // 
-            // traversebutton
-            // 
-            this.traversebutton.Location = new System.Drawing.Point(12, 465);
-            this.traversebutton.Name = "traversebutton";
-            this.traversebutton.Size = new System.Drawing.Size(111, 23);
-            this.traversebutton.TabIndex = 55;
-            this.traversebutton.Text = "Traverse <options>";
-            this.traversebutton.UseVisualStyleBackColor = true;
-            this.traversebutton.Click += new System.EventHandler(this.traversebutton_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 494);
+            this.button1.Location = new System.Drawing.Point(488, 438);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(122, 23);
             this.button1.TabIndex = 57;
-            this.button1.Text = "Print xml ";
+            this.button1.Text = "Print XML to console";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.printtoconsole);
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(9, 449);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(60, 13);
-            this.label14.TabIndex = 58;
-            this.label14.Text = "debugging:";
+            this.button1.Click += new System.EventHandler(this.PrintToConsole);
             // 
             // label4
             // 
@@ -478,6 +446,7 @@ namespace RiivoAutoBuilder
             this.choiceBox.Name = "choiceBox";
             this.choiceBox.Size = new System.Drawing.Size(283, 82);
             this.choiceBox.TabIndex = 17;
+            this.choiceBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ChoiceBoxClicked);
             this.choiceBox.SelectedIndexChanged += new System.EventHandler(this.ChoiceBoxIndexChanged);
             // 
             // propertiesGroupBox
@@ -500,16 +469,17 @@ namespace RiivoAutoBuilder
             // 
             // button3
             // 
+            this.button3.Enabled = false;
             this.button3.Location = new System.Drawing.Point(9, 205);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(177, 20);
             this.button3.TabIndex = 18;
             this.button3.Text = "Set New Folder...";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // textBox1
             // 
+            this.textBox1.Enabled = false;
             this.textBox1.Location = new System.Drawing.Point(9, 183);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(177, 20);
@@ -527,17 +497,18 @@ namespace RiivoAutoBuilder
             // europe
             // 
             this.europe.AutoSize = true;
+            this.europe.Enabled = false;
             this.europe.Location = new System.Drawing.Point(9, 44);
             this.europe.Name = "europe";
             this.europe.Size = new System.Drawing.Size(89, 17);
             this.europe.TabIndex = 15;
             this.europe.Text = "PAL (Europe)";
             this.europe.UseVisualStyleBackColor = true;
-            this.europe.CheckedChanged += new System.EventHandler(this.europe_CheckedChanged);
             // 
             // america
             // 
             this.america.AutoSize = true;
+            this.america.Enabled = false;
             this.america.Location = new System.Drawing.Point(9, 67);
             this.america.Name = "america";
             this.america.Size = new System.Drawing.Size(113, 17);
@@ -548,6 +519,7 @@ namespace RiivoAutoBuilder
             // japan
             // 
             this.japan.AutoSize = true;
+            this.japan.Enabled = false;
             this.japan.Location = new System.Drawing.Point(9, 90);
             this.japan.Name = "japan";
             this.japan.Size = new System.Drawing.Size(101, 17);
@@ -558,6 +530,7 @@ namespace RiivoAutoBuilder
             // korea
             // 
             this.korea.AutoSize = true;
+            this.korea.Enabled = false;
             this.korea.Location = new System.Drawing.Point(9, 113);
             this.korea.Name = "korea";
             this.korea.Size = new System.Drawing.Size(102, 17);
@@ -574,66 +547,11 @@ namespace RiivoAutoBuilder
             this.gameidLabel.TabIndex = 8;
             this.gameidLabel.Text = "GameID";
             // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(461, 465);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(25, 26);
-            this.button4.TabIndex = 61;
-            this.button4.Text = "s";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(488, 465);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(25, 26);
-            this.button5.TabIndex = 62;
-            this.button5.Text = "o";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(515, 465);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(25, 26);
-            this.button6.TabIndex = 63;
-            this.button6.Text = "c";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(542, 465);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(25, 26);
-            this.button7.TabIndex = 64;
-            this.button7.Text = "p";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(569, 465);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(41, 26);
-            this.button8.TabIndex = 65;
-            this.button8.Text = "pID";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(622, 524);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
+            this.ClientSize = new System.Drawing.Size(622, 465);
             this.Controls.Add(this.propertiesGroupBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.patchIDBox);
@@ -645,10 +563,7 @@ namespace RiivoAutoBuilder
             this.Controls.Add(this.label4);
             this.Controls.Add(this.patchesBox);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.label14);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.traversebutton);
-            this.Controls.Add(this.temptextbox);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -657,7 +572,6 @@ namespace RiivoAutoBuilder
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Riivolution Editor Thing";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.contextMenu.ResumeLayout(false);
@@ -692,12 +606,9 @@ namespace RiivoAutoBuilder
         private System.Windows.Forms.ToolStripMenuItem riivolutionDocumentationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem releasesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gitHubIssuesToolStripMenuItem;
-        private System.Windows.Forms.TextBox temptextbox;
         private System.Windows.Forms.ContextMenuStrip contextMenu;
-        private System.Windows.Forms.Button traversebutton;
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveUpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveDownToolStripMenuItem;
@@ -724,11 +635,6 @@ namespace RiivoAutoBuilder
         private System.Windows.Forms.ToolStripMenuItem rightClickOnWhatYouWantToEditToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
     }
 }
 
