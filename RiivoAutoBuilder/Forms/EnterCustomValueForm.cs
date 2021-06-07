@@ -19,17 +19,12 @@ namespace RiivoAutoBuilder.Forms
 
         private void ConfirmClicked(object sender, EventArgs e)
         {
-            Return();
+            
         }
 
         private void CancelClicked(object sender, EventArgs e)
         {
 
-        }
-        private string Return()
-        {
-            string text = textBox1.Text;
-            return textBox1.Text;
         }
     }
 }

@@ -20,7 +20,23 @@ namespace RiivoAutoBuilder
             InitializeComponent();
         }
 
+        private string LastListBoxAccessed = null;
+
+        private void PrepareForSaving()
+        {
+            // read values in different controls and apply changes to riivolution xml
+            riivofile.GameID = gameIDtextbox.Text;
+
+        }
+        private void PopulateControls()
+        {
+            gameIDtextbox.Text = riivofile.GameID;
+            sectionBox.DataSource = riivofile.GetSections();
+            patchIDBox.DataSource = riivofile.GetPatchIDs();
+        }
+
         #region MenuStrip Event Handlers
+        // File
         private void NewButtonClicked(object sender, EventArgs e)
         {
             if (riivofile.ChangedSinceSave)
@@ -62,24 +78,17 @@ namespace RiivoAutoBuilder
             }
             #region Enable and disable several controls
             gameIDtextbox.Enabled = true;
-
-            s_minusbutton.Enabled = true;
-            s_plusbutton.Enabled = true;
             sectionBox.Enabled = true;
-
-            id_minusbutton.Enabled = true;
-            id_plusbutton.Enabled = true;
             patchIDBox.Enabled = true;
-
             saveToolStripMenuItem.Enabled = true;
             saveAsToolStripMenuItem.Enabled = true;
             #endregion
 
             gameIDtextbox.Text = riivofile.GameID;
-            sectionBox.DataSource = riivofile.Sections;
-            patchIDBox.DataSource = riivofile.PatchIDs;
+            sectionBox.DataSource = riivofile.GetSections();
+            patchIDBox.DataSource = riivofile.GetPatchIDs();
         }
-        private void LoadButtonClicked(object sender, EventArgs e)
+        private void OpenButtonClicked(object sender, EventArgs e)
         {
             string xmlfilepath;
 
@@ -95,30 +104,26 @@ namespace RiivoAutoBuilder
             {
                 riivofile.LoadXML(xmlfilepath);
 
-                gameIDtextbox.Text = riivofile.GameID;
-
                 #region Enable and disable several controls
                 gameIDtextbox.Enabled = true;
-
-                s_minusbutton.Enabled = true;
-                s_plusbutton.Enabled = true;
                 sectionBox.Enabled = true;
-
-                id_minusbutton.Enabled = true;
-                id_plusbutton.Enabled = true;
                 patchIDBox.Enabled = true;
-
                 saveToolStripMenuItem.Enabled = true;
                 saveAsToolStripMenuItem.Enabled = true;
                 #endregion
 
-                sectionBox.DataSource = riivofile.Sections;
-                patchIDBox.DataSource = riivofile.PatchIDs;
+                #region Populate several controls with data
+                gameIDtextbox.Text = riivofile.GameID;
+
+                sectionBox.DataSource = riivofile.GetSections();
+                patchIDBox.DataSource = riivofile.GetPatchIDs();
+                #endregion
             }
             ofd.Dispose();
         }
         private void SaveButtonClicked(object sender, EventArgs e)
         {
+            PrepareForSaving();
             riivofile.Save();
         }
         private void SaveAsButtonClicked(object sender, EventArgs e)
@@ -137,143 +142,121 @@ namespace RiivoAutoBuilder
             }
             sfd.Dispose();
         }
+        // About
+        private new void HelpButtonClicked(object sender, EventArgs e)
+        {
+            MessageBox.Show("Credits: islender");
+        }
         #endregion
 
         #region SectionBox Event Handlers
-        private void sectionBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void SectionBoxIndexChanged(object sender, EventArgs e)
         {
-            #region controls
-            c_minusbutton.Enabled = false;
-            c_plusbutton.Enabled = false;
+            LastListBoxAccessed = "sectionBox";
             choiceBox.Enabled = false;
-
-            p_minusbutton.Enabled = false;
-            p_plusbutton.Enabled = false;
             patchesBox.Enabled = false;
-            #endregion
 
             ListBox.SelectedObjectCollection test = sectionBox.SelectedItems;
             if (test.Count == 0)
             {
-                #region controls
-                o_minusbutton.Enabled = false;
-                o_plusbutton.Enabled = false;
                 optionBox.Enabled = false;
-
-                c_minusbutton.Enabled = false;
-                c_plusbutton.Enabled = false;
                 choiceBox.Enabled = false;
-
-                p_minusbutton.Enabled = false;
-                p_plusbutton.Enabled = false;
                 patchesBox.Enabled = false;
-                #endregion
 
                 return;
             }
             else
             {
+                if (riivofile.GrabSelectedIndex(0) != sectionBox.SelectedIndex)
+                {
+                    // update index of other controls to the default value/index (0) as they get autoselected. prevents a bug
+                    riivofile.UpdateSelectedIndex(1, optionBox.SelectedIndex);
+                    riivofile.UpdateSelectedIndex(2, choiceBox.SelectedIndex);
+                    riivofile.UpdateSelectedIndex(3, patchesBox.SelectedIndex);
+                }
                 riivofile.UpdateSelectedIndex(0, sectionBox.SelectedIndex);
-                optionBox.DataSource = riivofile.Options;
-
-                #region controls
-                o_minusbutton.Enabled = true;
-                o_plusbutton.Enabled = true;
+                optionBox.DataSource = riivofile.GetOptions();
                 optionBox.Enabled = true;
-                #endregion
+
             }
         }
         #endregion
 
         #region OptionBox Event Handlers
-        private void optionBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void OptionBoxIndexChanged(object sender, EventArgs e)
         {
-            #region controls
-            p_minusbutton.Enabled = false;
-            p_plusbutton.Enabled = false;
+            LastListBoxAccessed = "optionBox";
             patchesBox.Enabled = false;
-            #endregion
 
             ListBox.SelectedObjectCollection test = optionBox.SelectedItems;
             if (test.Count == 0)
             {
-                #region controls
-                c_minusbutton.Enabled = false;
-                c_plusbutton.Enabled = false;
                 choiceBox.Enabled = false;
-
-                p_minusbutton.Enabled = false;
-                p_plusbutton.Enabled = false;
                 patchesBox.Enabled = false;
-                #endregion
 
                 return;
             }
             else
             {
+                if (riivofile.GrabSelectedIndex(0) != sectionBox.SelectedIndex)
+                {
+                    // update index of other controls to the default value/index (0) as they get autoselected. prevents a bug
+                    riivofile.UpdateSelectedIndex(2, choiceBox.SelectedIndex);
+                    riivofile.UpdateSelectedIndex(3, patchesBox.SelectedIndex);
+                }
                 riivofile.UpdateSelectedIndex(1, optionBox.SelectedIndex);
-                choiceBox.DataSource = riivofile.Choices;
-
-                #region controls
-                c_minusbutton.Enabled = true;
-                c_plusbutton.Enabled = true;
+                choiceBox.DataSource = riivofile.GetChoices();
                 choiceBox.Enabled = true;
-                #endregion
             }
         }
         #endregion
 
         #region ChoiceBox Event Handlers
-        private void choiceBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void ChoiceBoxIndexChanged(object sender, EventArgs e)
         {
+            LastListBoxAccessed = "choiceBox";
             ListBox.SelectedObjectCollection test = choiceBox.SelectedItems;
             if (test.Count == 0)
             {
-                #region controls
-                p_minusbutton.Enabled = false;
                 patchesBox.Enabled = false;
-                #endregion
+
                 return;
             }
             else
             {
+                if (riivofile.GrabSelectedIndex(0) != sectionBox.SelectedIndex)
+                {
+                    // update index of other controls to the default value/index (0) as they get autoselected. prevents a bug
+                    riivofile.UpdateSelectedIndex(3, patchesBox.SelectedIndex);
+                }
                 riivofile.UpdateSelectedIndex(2, choiceBox.SelectedIndex);
-                patchesBox.DataSource = riivofile.Patches;
-
-                #region controls
-                p_minusbutton.Enabled = true;
+                patchesBox.DataSource = riivofile.GetPatches();
                 patchesBox.Enabled = true;
-                #endregion
                 
             }
         }
         #endregion
 
         #region PatchesBox Event Handlers
-        private void PatchesMinusClicked(object sender, EventArgs e)
+        private void PatchesBoxIndexChanged(object sender, EventArgs e)
         {
-
-        }
-        private void PatchesPlusClicked(object sender, EventArgs e)
-        {
-
-
+            LastListBoxAccessed = "patchesBox";
+            ListBox.SelectedObjectCollection test = patchesBox.SelectedItems;
+            if (test.Count == 0)
+            {
+                return;
+            }
+            else
+            {
+                riivofile.UpdateSelectedIndex(3, patchesBox.SelectedIndex);
+            }
         }
         #endregion
 
         #region PatchIDBox Event Handlers
-        private void PatchIDsMinusClicked(object sender, EventArgs e)
+        private void PatchIDBoxIndexChanged(object sender, EventArgs e)
         {
-
-        }
-
-        private void PatchIDsPlusClicked(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PatchIDsEditClicked(object sender, EventArgs e)
-        {
+            LastListBoxAccessed = "patchIDBox";
             ListBox.SelectedObjectCollection test = patchIDBox.SelectedItems;
             if (test.Count == 0)
             {
@@ -281,36 +264,137 @@ namespace RiivoAutoBuilder
             }
             else
             {
-                int temptt = patchIDBox.SelectedIndex;
-                string streng = temptextbox.Text; // gets text from within temp textbox 
-                 // parses patchid index and the name to change the patchid to
+                riivofile.UpdateSelectedIndex(4, patchIDBox.SelectedIndex);
             }
         }
         #endregion
 
-        private void patchIDBox_SelectedIndexChanged(object sender, EventArgs e)
+        #region ContextMenuStrip Event Handlers
+        private void ContextMenuOpened(object sender, CancelEventArgs e)
         {
+            Control control = ((ContextMenuStrip)(sender)).SourceControl;
+            Console.WriteLine("context menu opened on: {0}",control.Name.ToString());
+            LastListBoxAccessed = control.Name.ToString();
+        }
+        private void ContextMenuEditPressed(object sender, EventArgs e)
+        {
+            Console.WriteLine("edit pressed");
+            if (LastListBoxAccessed == "sectionBox" )
+            {
+                Console.WriteLine("context menu opened on: sectionBox");
+
+            }
+            else if (LastListBoxAccessed == "optionBox")
+            {
+                Console.WriteLine("context menu opened on: optionBox");
+            }
+            else if (LastListBoxAccessed == "choiceBox")
+            {
+                Console.WriteLine("context menu opened on: choiceBox");
+            }
+            else if (LastListBoxAccessed == "patchesBox")
+            {
+                Console.WriteLine("context menu opened on: patchesBox");
+            }
+            else if (LastListBoxAccessed == "patchIDBox")
+            {
+                Console.WriteLine("context menu opened on: patchIDBox");
+            }
+        }
+        private void ContextMenuAddPressed(object sender, EventArgs e)
+        {
+            Console.WriteLine("add node pressed");
+
+        }
+        private void ContextMenuRemovePressed(object sender, EventArgs e)
+        {
+            Console.WriteLine("remove node pressed");
+
+        }
+        private void ContextMenuMoveUpPressed(object sender, EventArgs e)
+        {
+            Console.WriteLine("move up pressed");
+
+        }
+        private void ContextMenuMoveDownPressed(object sender, EventArgs e)
+        {
+            Console.WriteLine("move down pressed");
 
         }
 
+        #endregion
+
+        // everything under here is for debugging
+        #region debug
         private void traversebutton_Click(object sender, EventArgs e)
         {
             riivofile.StartOptionsTraversal();
         }
-
         private void patchcountbutton_Click(object sender, EventArgs e)
         {
             
         }
-
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        private void printtoconsole(object sender, EventArgs e)
         {
-            MessageBox.Show("Credits: islender\nLicenses: MIT");
+            riivofile.PrintToConsole();
         }
 
-        private void gameIDToolStripMenuItem_Click(object sender, EventArgs e)
+        private void customtextokclicked(object sender, EventArgs e)
         {
 
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void europe_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
+        private void gameIDtextbox_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            riivofile.EditSelectedNodeName("section", temptextbox.Text);
+            PopulateControls();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            riivofile.EditSelectedNodeName("option", temptextbox.Text);
+            PopulateControls();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            riivofile.EditSelectedNodeName("choice", temptextbox.Text);
+            PopulateControls();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            riivofile.EditSelectedNodeName("patch", temptextbox.Text);
+            PopulateControls();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            riivofile.EditSelectedNodeName("patchid", temptextbox.Text);
+            PopulateControls();
+        }
+
+
     }
 }

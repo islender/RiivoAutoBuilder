@@ -11,133 +11,42 @@ namespace RiivoAutoBuilder
 {
     class RiivolutionFile
     {
-        #region XML and Nodes
+        #region XML and other nodes
         private XmlDocument xml = new XmlDocument();
-        public XmlNode wiidisc;
-        public XmlNode options;
-        public XmlNodeList sectionlist;
-        public XmlNodeList patcheslist;
+        private XmlNode wiidisc;
+        private XmlNode options;
+        private XmlNode id;
         #endregion
 
-        #region New nodes and traversal code
+        #region Main nodes collections
+        private XmlNodeList sectionlist;
+        private XmlNodeList optionslist;
+        private XmlNodeList choiceslist;
+        private XmlNodeList patcheslist;
+        private XmlNodeList patchidslist;
+        #endregion
+
+        #region New node reading system testing
         public List<string> section_collection = new List<string>();
         public List<string> option_collection = new List<string>();
         public List<string> choice_collection = new List<string>();
         public List<string> patch_collection = new List<string>();
         public List<string> patchid_collection = new List<string>();
         // show how many of each node there are
-        public int section_;
-        public int option_;
-        public int choice_;
-        public int patch_;
-        public int patchid_;
-
-        public void StartOptionsTraversal()
-        {
-            section_ = 0;
-            option_ = 0;
-            choice_ = 0;
-            patch_ = 0;
-            TraverseOptions(options);
-        }
-        public void TraverseOptions(XmlNode node)
-        {
-            Console.WriteLine("one traversal:");
-            Console.WriteLine("child nodes? {0}",node.HasChildNodes);
-            if (node.HasChildNodes == true) // checks if current node has any children
-            {
-                XmlNodeList list = node.ChildNodes;
-                int count = list.Count;
-                for (int i = 0; i < count; i++)
-                {
-                    TraverseOptions(list[i]);
-                }
-                
-                if (node.LocalName == "section") 
-                {
-                    Console.WriteLine("Adding section...");
-                    string nodename = GetFirstAttributeName(node);
-                    section_ += 1;
-                    section_collection.Add(nodename);
-                }
-                if (node.LocalName == "option")
-                {
-                    Console.WriteLine("Adding option...");
-                    string nodename = GetFirstAttributeName(node);
-                    option_ += 1;
-                    option_collection.Add(nodename);
-                }
-                if (node.LocalName == "choice")
-                {
-                    Console.WriteLine("Adding choice...");
-                    string nodename = GetFirstAttributeName(node);
-                    choice_ += 1;
-                    choice_collection.Add(nodename);
-                }
-                if (node.LocalName == "patch") 
-                {
-                    Console.WriteLine("Adding patch...");
-                    string nodename = GetFirstAttributeName(node);
-                    patch_ += 1;
-                    patch_collection.Add(nodename);
-                }
-                Console.WriteLine("section: {0} option: {1} choice: {2} patch: {3}", section_, option_, choice_, patch_);
-            }
-            else
-            {
-                if (node.LocalName == "section")
-                {
-                    Console.WriteLine("Adding section...");
-                    string nodename = GetFirstAttributeName(node);
-                    section_ += 1;
-                    section_collection.Add(nodename);
-                }
-                if (node.LocalName == "option")
-                {
-                    Console.WriteLine("Adding option...");
-                    string nodename = GetFirstAttributeName(node);
-                    option_ += 1;
-                    option_collection.Add(nodename);
-                }
-                if (node.LocalName == "choice")
-                {
-                    Console.WriteLine("Adding choice...");
-                    string nodename = GetFirstAttributeName(node);
-                    choice_ += 1;
-                    choice_collection.Add(nodename);
-                }
-                if (node.LocalName == "patch")
-                {
-                    Console.WriteLine("Adding patch...");
-                    string nodename = GetFirstAttributeName(node);
-                    Console.WriteLine("attribute name: {0}", nodename);
-                    patch_ += 1;
-                    patch_collection.Add(nodename);
-                }
-                Console.WriteLine("section: {0} option: {1} choice: {2} patch: {3}", section_, option_, choice_, patch_);
-            }
-            
-                
-        }
-
-        public string GetFirstAttributeName(XmlNode node)
-        {
-            XmlAttributeCollection attributes = node.Attributes;
-            Console.WriteLine(node.LocalName);
-            Console.WriteLine(attributes.Count);
-            XmlAttribute attrib = attributes[0];
-            string name = attrib.Value;
-            return name;
-
-        }
-
-        // public void EditTraversal(XmlNode node,int nodeindex,string nodename)
+        public int section_count;
+        public int option_count;
+        public int choice_count;
+        public int patch_count;
         #endregion
 
+        #region Misc variables
         private string newFilePath;
         private bool changedSinceLastSave;
+        // keeps track of the indexes of the currently selected node in the groupBoxes
         private List<int> selectedIndexes = new List<int> { 0, 0, 0, 0, 0 }; // {section, option, choice, patch, patchid}
+        #endregion
 
+        #region Loading, reading and saving methods
         public void LoadFromTemplate()
         {
             try
@@ -167,16 +76,19 @@ namespace RiivoAutoBuilder
         }
         private void ReadXML()
         {
-            #region Get all the nodes
-            this.wiidisc = xml.SelectSingleNode("wiidisc"); // Get wiidisc (root) node as an "XmlNode"
-            this.options = wiidisc.SelectSingleNode("options"); // get first (and only) <options> node
-            this.sectionlist = options.SelectNodes("section"); // get all <section>s
-            this.patcheslist = wiidisc.SelectNodes("patch"); // get all <patch>es
+            #region Get other nodes
+            wiidisc = xml.SelectSingleNode("wiidisc"); // Get wiidisc (root) node as an "XmlNode"
+            options = wiidisc.SelectSingleNode("options"); // get first (and only) <options> node
+            id = wiidisc.SelectSingleNode("id"); // self explanatory
             #endregion
-        }
-        public void UpdateSelectedIndex(int index, int value)
-        {
-            selectedIndexes.Insert(index, value);
+
+            #region Get main nodes
+            sectionlist = xml.GetElementsByTagName("section");
+            optionslist = xml.GetElementsByTagName("option");
+            choiceslist = xml.GetElementsByTagName("choice");
+            patcheslist = options.SelectNodes("./descendant::patch"); 
+            patchidslist = wiidisc.SelectNodes("patch");
+            #endregion
         }
         public void Save()
         {
@@ -202,11 +114,193 @@ namespace RiivoAutoBuilder
                 return;
             }
         }
-        public void EditAttribute()
+        #endregion
+
+        public void UpdateSelectedIndex(int index, int value)
         {
+            selectedIndexes.Insert(index, value);
+        }
+        public int GrabSelectedIndex(int index)
+        {
+            return selectedIndexes[index];
+        }
+
+        public string GetFirstAttributeName(XmlNode node)
+        {
+            XmlAttributeCollection attributes = node.Attributes;
+            Console.WriteLine(node.LocalName);
+            Console.WriteLine(attributes.Count);
+            XmlAttribute attrib = attributes[0];
+            string name = attrib.Value;
+            return name;
 
         }
 
+        #region Debugging/testing methods
+        public void PrintToConsole()
+        {
+            xml.Save(Console.Out);
+        }
+        #endregion
+
+        #region Methods used for tree traversal
+        public void StartOptionsTraversal()
+        {
+            section_count = 0;
+            option_count = 0;
+            choice_count = 0;
+            patch_count = 0;
+            TraverseOptions(options);
+        }
+        public void TraverseOptions(XmlNode node)
+        {
+            Console.WriteLine("one traversal:");
+            Console.WriteLine("child nodes? {0}", node.HasChildNodes);
+            if (node.HasChildNodes == true) // checks if current node has any children
+            {
+                XmlNodeList list = node.ChildNodes;
+                int count = list.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    TraverseOptions(list[i]);
+                }
+
+                if (node.LocalName == "section")
+                {
+                    Console.WriteLine("Adding section...");
+                    string nodename = GetFirstAttributeName(node);
+                    section_count += 1;
+                    section_collection.Add(nodename);
+                }
+                if (node.LocalName == "option")
+                {
+                    Console.WriteLine("Adding option...");
+                    string nodename = GetFirstAttributeName(node);
+                    option_count += 1;
+                    option_collection.Add(nodename);
+                }
+                if (node.LocalName == "choice")
+                {
+                    Console.WriteLine("Adding choice...");
+                    string nodename = GetFirstAttributeName(node);
+                    choice_count += 1;
+                    choice_collection.Add(nodename);
+                }
+                if (node.LocalName == "patch")
+                {
+                    Console.WriteLine("Adding patch...");
+                    string nodename = GetFirstAttributeName(node);
+                    patch_count += 1;
+                    patch_collection.Add(nodename);
+                }
+                Console.WriteLine("section: {0} option: {1} choice: {2} patch: {3}", section_count, option_count, choice_count, patch_count);
+            }
+            else
+            {
+                if (node.LocalName == "section")
+                {
+                    Console.WriteLine("Adding section...");
+                    string nodename = GetFirstAttributeName(node);
+                    section_count += 1;
+                    section_collection.Add(nodename);
+                }
+                if (node.LocalName == "option")
+                {
+                    Console.WriteLine("Adding option...");
+                    string nodename = GetFirstAttributeName(node);
+                    option_count += 1;
+                    option_collection.Add(nodename);
+                }
+                if (node.LocalName == "choice")
+                {
+                    Console.WriteLine("Adding choice...");
+                    string nodename = GetFirstAttributeName(node);
+                    choice_count += 1;
+                    choice_collection.Add(nodename);
+                }
+                if (node.LocalName == "patch")
+                {
+                    Console.WriteLine("Adding patch...");
+                    string nodename = GetFirstAttributeName(node);
+                    Console.WriteLine("attribute name: {0}", nodename);
+                    patch_count += 1;
+                    patch_collection.Add(nodename);
+                }
+                Console.WriteLine("section: {0} option: {1} choice: {2} patch: {3}", section_count, option_count, choice_count, patch_count);
+            }
+
+
+        }
+        public void EditTraversal(XmlNode node,int nodeindex,string nodename)
+        {
+
+        }
+        #endregion
+
+        #region Code for editing nodes and stuff
+        public XmlNode FindEditableNode(string nodetype)
+        {
+            if (nodetype == "section")
+            {
+                XmlNodeList n1 = options.ChildNodes;
+                XmlNode editablenode = n1.Item(selectedIndexes[0]);
+                return editablenode;
+            }
+            else if (nodetype == "option")
+            {
+                XmlNodeList n1 = options.ChildNodes;
+                XmlNode n2 = n1.Item(selectedIndexes[0]);
+                XmlNodeList n3 = n2.ChildNodes;
+                XmlNode editablenode = n3.Item(selectedIndexes[1]);
+                return editablenode;
+            }
+            else if (nodetype == "choice")
+            {
+                XmlNodeList n1 = options.ChildNodes;
+                XmlNode n2 = n1.Item(selectedIndexes[0]);
+                XmlNodeList n3 = n2.ChildNodes;
+                XmlNode n4 = n3.Item(selectedIndexes[1]);
+                XmlNodeList n5 = n4.ChildNodes;
+                XmlNode editablenode = n5.Item(selectedIndexes[2]);
+                return editablenode;
+            }
+            else if (nodetype == "patch")
+            {
+                XmlNodeList n1 = options.ChildNodes;
+                XmlNode n2 = n1.Item(selectedIndexes[0]);
+                XmlNodeList n3 = n2.ChildNodes;
+                XmlNode n4 = n3.Item(selectedIndexes[1]);
+                XmlNodeList n5 = n4.ChildNodes;
+                XmlNode n6 = n5.Item(selectedIndexes[2]);
+                XmlNodeList n7 = n6.ChildNodes;
+                XmlNode editablenode = n7.Item(selectedIndexes[3]);
+                return editablenode;
+            }
+            else if (nodetype == "patchid")
+            {
+                XmlNode editablenode = patchidslist.Item(selectedIndexes[4]);
+                return editablenode;
+            }
+            else 
+            {
+                Console.WriteLine("invalid node type, aborting...");
+                return null;
+            }
+            
+        }
+
+        public void EditSelectedNodeName(string nodetype, string value)
+        {
+            XmlNode node = FindEditableNode(nodetype); // nodetype determines what the name of the node is for editing, example: patch or section
+            XmlAttributeCollection attribs = node.Attributes;
+            XmlNode attrib = attribs.Item(0);
+            attrib.InnerText = value;
+        }
+
+
+        #endregion
+
+        #region Misc properties
         public string NewFilePath
         {
             get
@@ -229,24 +323,6 @@ namespace RiivoAutoBuilder
                 changedSinceLastSave = value;
             }
         }
-
-        public string GameID
-        {
-            get
-            {
-                XmlNode id = wiidisc.SelectSingleNode("id");
-                XmlAttributeCollection idAttributes = id.Attributes; // get attributes of gameid
-                XmlNode id2 = idAttributes["game"]; // searches for game attribute
-                return id2.Value;
-            }
-            set
-            {
-                XmlNode id = wiidisc.SelectSingleNode("id");
-                XmlAttributeCollection idAttributes = id.Attributes; // get attributes of gameid
-                XmlNode id2 = idAttributes["game"]; // searches for game attribute
-                id2.Value = value;
-            }
-        }
         public string WiidiscRoot
         {
             get
@@ -262,181 +338,165 @@ namespace RiivoAutoBuilder
                 root.Value = value;
             }
         }
-        
-        public List<string> Regions
+        #endregion
+
+        #region Properties and lists for other stuff
+        // stuff for manipulating id tag at top of xml document
+        public string GameID
         {
             get
             {
-                List<string> regioncodes = new List<string>();
-                XmlNodeList regions = wiidisc.SelectNodes("region");
-                for (int i = 0; i < regions.Count; i++)
-                {
-                    XmlNode node = regions.Item(i);
-                    XmlAttributeCollection attribs = node.Attributes; // get attributes of gameid
-                    XmlNode attr2 = attribs["type"]; // searches for game attribute
-                    regioncodes.Add(attr2.Value);
-                }
-                return regioncodes;
+                XmlAttributeCollection idAttributes = id.Attributes; // get attributes of gameid
+                XmlNode id2 = idAttributes["game"]; // searches for game attribute
+                return id2.Value;
             }
             set
             {
-
+                XmlAttributeCollection idAttributes = id.Attributes; // get attributes of gameid
+                XmlNode id2 = idAttributes["game"]; // searches for game attribute
+                id2.Value = value;
             }
         }
-        public List<string> Sections
+        public string DeveloperID
         {
             get
             {
-                List<string> newlist = new List<string>();
-                for (int i = 0; i < sectionlist.Count; i++)
-                {
-                    XmlNode node = sectionlist.Item(i);
-                    XmlAttributeCollection attribcollect = node.Attributes;
-                    XmlNode attrib = attribcollect.Item(0);
-                    newlist.Add(attrib.Value);
-                }
-                return newlist;
+                XmlAttributeCollection idAttributes = id.Attributes;
+                XmlNode id2 = idAttributes["developer"]; 
+                return id2.Value;
             }
             set
             {
-
+                XmlAttributeCollection idAttributes = id.Attributes; 
+                XmlNode id2 = idAttributes["developer"]; 
+                id2.Value = value;
             }
         }
-        public List<string> Options
+        public string DiscNumberID
         {
             get
             {
-                XmlNode selected_section = sectionlist.Item(selectedIndexes[0]);
-                XmlNodeList nodelist = selected_section.ChildNodes;
-                List<string> newlist = new List<string>();
-                for (int i = 0; i < nodelist.Count; i++)
-                {
-                    XmlNode node = nodelist.Item(i);
-                    XmlAttributeCollection attribcollect = node.Attributes;
-                    XmlNode attrib = attribcollect.Item(0);
-                    newlist.Add(attrib.Value);
-                }
-                return newlist;
+                XmlAttributeCollection idAttributes = id.Attributes; 
+                XmlNode id2 = idAttributes["disc"];
+                return id2.Value;
             }
             set
             {
-
+                XmlAttributeCollection idAttributes = id.Attributes; 
+                XmlNode id2 = idAttributes["disc"]; 
+                id2.Value = value;
             }
         }
-        public List<string> Choices
+        public string GameVersionID
         {
             get
             {
-                XmlNode selected_section = sectionlist.Item(selectedIndexes[0]);
-                XmlNodeList nodelist1 = selected_section.ChildNodes;
-                XmlNode selected_option = nodelist1.Item(selectedIndexes[1]);
-                XmlNodeList nodelist = selected_option.ChildNodes;
-
-                List<string> newlist = new List<string>();
-                for (int i = 0; i < nodelist.Count; i++)
-                {
-                    XmlNode node = nodelist.Item(i);
-                    XmlAttributeCollection attribcollect = node.Attributes;
-                    XmlNode attrib = attribcollect.Item(0);
-                    newlist.Add(attrib.Value);
-                }
-                return newlist;
+                XmlAttributeCollection idAttributes = id.Attributes; 
+                XmlNode id2 = idAttributes["version"];
+                return id2.Value;
             }
             set
             {
-
+                XmlAttributeCollection idAttributes = id.Attributes;
+                XmlNode id2 = idAttributes["version"]; 
+                id2.Value = value;
             }
         }
-        public List<string> Patches
+
+        public List<string> GetRegions()
         {
-            get
+            List<string> regioncodes = new List<string>();
+            XmlNodeList regions = wiidisc.SelectNodes("region");
+            for (int i = 0; i < regions.Count; i++)
             {
-                XmlNode selected_section = sectionlist.Item(selectedIndexes[0]);
-                XmlNodeList nodelist1 = selected_section.ChildNodes;
-                XmlNode selected_option = nodelist1.Item(selectedIndexes[1]);
-                XmlNodeList nodelist2 = selected_option.ChildNodes;
-                XmlNode selected_choice = nodelist2.Item(selectedIndexes[2]);
-                XmlNodeList nodelist = selected_choice.ChildNodes;
-
-                List<string> newlist = new List<string>();
-                for (int i = 0; i < nodelist.Count; i++)
-                {
-                    XmlNode node = nodelist.Item(i);
-                    XmlAttributeCollection attribcollect = node.Attributes;
-                    XmlNode attrib = attribcollect.Item(0);
-                    newlist.Add(attrib.Value);
-                }
-                return newlist;
+                XmlNode node = regions.Item(i);
+                XmlAttributeCollection attribs = node.Attributes; // get attributes of gameid
+                XmlNode attr2 = attribs["type"]; // searches for game attribute
+                regioncodes.Add(attr2.Value);
             }
-            set
-            {
-                XmlNode selected_section = sectionlist.Item(selectedIndexes[0]);
-                XmlNodeList nodelist1 = selected_section.ChildNodes;
-                XmlNode selected_option = nodelist1.Item(selectedIndexes[1]);
-                XmlNodeList nodelist2 = selected_option.ChildNodes;
-                XmlNode selected_choice = nodelist2.Item(selectedIndexes[2]);
-
-                List<string> listt = this.Patches;
-                int size = listt.Count;
-
-                selected_choice.AppendChild(xml.CreateElement("patch"));
-                XmlNodeList childnodes = selected_choice.ChildNodes;
-                int thing = childnodes.Count;
-
-
-            }
+            return regioncodes;
         }
-        public List<string> PatchIDs
+        #endregion
+
+        #region Get lists of main nodes to parse to groupBoxes and other controls
+        public List<string> GetSections()
         {
-            get
-            {
-                List<string> newlist = new List<string>();
-                for (int i = 0; i < patcheslist.Count; i++)
-                {
-                    XmlNode node = patcheslist.Item(i);
-                    XmlAttributeCollection attribcollect = node.Attributes;
-                    XmlNode attrib = attribcollect.Item(0);
-                    newlist.Add(attrib.Value);
-                }
-                return newlist;
-            }
-            set
-            {
 
+            List<string> newlist = new List<string>();
+            for (int i = 0; i < sectionlist.Count; i++)
+            {
+                XmlNode node = sectionlist.Item(i);
+                XmlAttributeCollection attribcollect = node.Attributes;
+                XmlNode attrib = attribcollect.Item(0);
+                newlist.Add(attrib.Value);
             }
+            return newlist;
+
         }
-
-    }
-
-    class WiidiscNode
-    {
-        public string version
+        public List<string> GetOptions()
         {
-            get
-            {
-                return version;
-            }
-            set
-            {
-                this.version = value;
-            }
-        }
-        public string root
-        {
-            get
-            {
-                return root;
-            }
-            set
-            {
-                this.root = value;
-            }
-        }
 
-        public void Apply()
-        {
-            
-        }
+            XmlNode selected_section = sectionlist.Item(selectedIndexes[0]);
+            XmlNodeList nodelist = selected_section.ChildNodes;
+            List<string> newlist = new List<string>();
+            for (int i = 0; i < nodelist.Count; i++)
+            {
+                XmlNode node = nodelist.Item(i);
+                XmlAttributeCollection attribcollect = node.Attributes;
+                XmlNode attrib = attribcollect.Item(0);
+                newlist.Add(attrib.Value);
+            }
+            return newlist;
 
+        }
+        public List<string> GetChoices()
+        {
+            XmlNode selected_section = sectionlist.Item(selectedIndexes[0]);
+            XmlNodeList nodelist1 = selected_section.ChildNodes;
+            XmlNode selected_option = nodelist1.Item(selectedIndexes[1]);
+            XmlNodeList nodelist = selected_option.ChildNodes;
+
+            List<string> newlist = new List<string>();
+            for (int i = 0; i < nodelist.Count; i++)
+            {
+                XmlNode node = nodelist.Item(i);
+                XmlAttributeCollection attribcollect = node.Attributes;
+                XmlNode attrib = attribcollect.Item(0);
+                newlist.Add(attrib.Value);
+            }
+            return newlist;
+        }
+        public List<string> GetPatches()
+        {
+            XmlNode selected_section = sectionlist.Item(selectedIndexes[0]);
+            XmlNodeList nodelist1 = selected_section.ChildNodes;
+            XmlNode selected_option = nodelist1.Item(selectedIndexes[1]);
+            XmlNodeList nodelist2 = selected_option.ChildNodes;
+            XmlNode selected_choice = nodelist2.Item(selectedIndexes[2]);
+            XmlNodeList nodelist = selected_choice.ChildNodes;
+
+            List<string> newlist = new List<string>();
+            for (int i = 0; i < nodelist.Count; i++)
+            {
+                XmlNode node = nodelist.Item(i);
+                XmlAttributeCollection attribcollect = node.Attributes;
+                XmlNode attrib = attribcollect.Item(0);
+                newlist.Add(attrib.Value);
+            }
+            return newlist;
+        }
+        public List<string> GetPatchIDs()
+        {
+            List<string> newlist = new List<string>();
+            for (int i = 0; i < patchidslist.Count; i++)
+            {
+                XmlNode node = patchidslist.Item(i);
+                XmlAttributeCollection attribcollect = node.Attributes;
+                XmlNode attrib = attribcollect.Item(0);
+                newlist.Add(attrib.Value);
+            }
+            return newlist;
+        }
+        #endregion
     }
 }
