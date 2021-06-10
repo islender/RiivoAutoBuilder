@@ -401,32 +401,37 @@ namespace RiivoAutoBuilder
 
         private void ContextMenuAddPressed(object sender, EventArgs e)
         {
-            Console.WriteLine("add node pressed");
-            rii.AddNewNode("section");
+            try
+            {
+                rii.AddNewNode(LastListBoxAccessed.Replace("Box", ""));
+                rii.ChangedSinceSave = true;
+            }
+            catch
+            {
+                Console.WriteLine("Error adding a new node to this category");
+            }
             PopulateControls();
         }
 
         private void ContextMenuRemovePressed(object sender, EventArgs e)
         {
-            Console.WriteLine("remove node pressed");
-
             var result = MessageBox.Show("Are you sure you want to delete this node and all subnodes?","Warning", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 try
                 {
-                    rii.DeleteSelectedNode("section");
+                    rii.DeleteSelectedNode(LastListBoxAccessed.Replace("Box", ""));
                     rii.ChangedSinceSave = true;
-                    PopulateControls();
                 }
                 catch
                 {
                     Console.WriteLine("Error deleting selected node");
                 }
+                PopulateControls();
             }
             else if (result == DialogResult.No)
             {
-
+                return;
             }
 
         }

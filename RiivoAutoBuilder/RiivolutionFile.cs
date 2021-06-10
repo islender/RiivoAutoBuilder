@@ -77,22 +77,19 @@ namespace RiivoAutoBuilder
         }
         private void ReadXML()
         {
-            #region Get other nodes
+            // Get other nodes
             wiidisc = xml.SelectSingleNode("wiidisc"); // Get wiidisc (root) node as an "XmlNode"
             options = wiidisc.SelectSingleNode("options"); // get first (and only) <options> node
             id = wiidisc.SelectSingleNode("id"); // self explanatory
-            #endregion
+            //
 
-            #region Get main nodes
+            // Get main nodes
             sectionlist = xml.GetElementsByTagName("section");
             optionslist = xml.GetElementsByTagName("option");
             choiceslist = xml.GetElementsByTagName("choice");
             patcheslist = options.SelectNodes("./descendant::patch"); 
             patchidslist = wiidisc.SelectNodes("patch");
-            #endregion
-
-            //XmlNode testnode = options.SelectSingleNode("section").Clone();
-            //options.AppendChild(testnode);
+            //
         }
         public void Save()
         {
@@ -310,56 +307,79 @@ namespace RiivoAutoBuilder
         {
             if (nodetype == "section")
             {
-                options.RemoveChild(sectionlist.Item(selectedIndexes[0]));
+                options.RemoveChild(FindSelectedNode("section"));
+                
             }
             else if (nodetype == "option")
             {
-                //xml.RemoveChild();
+                FindSelectedNode("section").RemoveChild(FindSelectedNode("option"));
             }
             else if (nodetype == "choice")
             {
-                //xml.RemoveChild();
+                FindSelectedNode("option").RemoveChild(FindSelectedNode("choice"));
             }
             else if (nodetype == "patch")
             {
-                //xml.RemoveChild();
+                FindSelectedNode("choice").RemoveChild(FindSelectedNode("patch"));
             }
             else if (nodetype == "patchid")
             {
-                //xml.RemoveChild();
+                wiidisc.RemoveChild(patchidslist.Item(selectedIndexes[4]));
+                patchidslist = wiidisc.SelectNodes("patch");
             }
-            
         }
         public void AddNewNode(string nodetype)
         {
+            XmlDocument temp = new XmlDocument();
+
             if (nodetype == "section")
             {
-                XmlDocument temp = new XmlDocument();
                 string loadthis = "<section name=\"My Hack Page\"></section>";
                 temp.LoadXml(loadthis);
                 XmlNode insertthis = xml.ImportNode(temp.SelectSingleNode("section"),false);
+                //
                 options.AppendChild(insertthis);
-                return;
             }
             else if (nodetype == "option")
             {
-
+                string loadthis = "<option name=\"Enable My Hack?\"></option>";
+                temp.LoadXml(loadthis);
+                XmlNode insertthis = xml.ImportNode(temp.SelectSingleNode("option"), false);
+                //
+                XmlNode parent = FindSelectedNode("section");
+                parent.AppendChild(insertthis);
             }
             else if (nodetype == "choice")
             {
-
+                string loadthis = "<choice name=\"Enabled\"></choice>";
+                temp.LoadXml(loadthis);
+                XmlNode insertthis = xml.ImportNode(temp.SelectSingleNode("choice"), false);
+                //
+                XmlNode parent = FindSelectedNode("option");
+                parent.AppendChild(insertthis);
             }
             else if (nodetype == "patch")
             {
-
+                string loadthis = "<patch id=\"MyPatch\"></patch>";
+                temp.LoadXml(loadthis);
+                XmlNode insertthis = xml.ImportNode(temp.SelectSingleNode("patch"), false);
+                //
+                XmlNode parent = FindSelectedNode("choice");
+                parent.AppendChild(insertthis);
             }
             else if (nodetype == "patchid")
             {
+                string loadthis = "<patch id=\"MyPatch\"></patch>";
+                temp.LoadXml(loadthis);
+                XmlNode insertthis = xml.ImportNode(temp.SelectSingleNode("patch"), false);
+                //
+                wiidisc.AppendChild(insertthis);
 
+                // Refresh patcheslist to contain new patchids
+                patchidslist = wiidisc.SelectNodes("patch");
             }
+
         }
-
-
 
         // Misc properties
         public string NewFilePath
