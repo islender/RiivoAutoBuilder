@@ -64,12 +64,12 @@ namespace RiivoAutoBuilder
             this.moveDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sectionBox = new System.Windows.Forms.ListBox();
             this.optionBox = new System.Windows.Forms.ListBox();
-            this.patchIDBox = new System.Windows.Forms.ListBox();
+            this.patchidBox = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.patchesBox = new System.Windows.Forms.ListBox();
+            this.patchBox = new System.Windows.Forms.ListBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.choiceBox = new System.Windows.Forms.ListBox();
@@ -269,6 +269,7 @@ namespace RiivoAutoBuilder
             this.gameIDtextbox.Name = "gameIDtextbox";
             this.gameIDtextbox.Size = new System.Drawing.Size(38, 20);
             this.gameIDtextbox.TabIndex = 7;
+            this.gameIDtextbox.TextChanged += new System.EventHandler(this.GameIDTextChanged);
             // 
             // contextMenu
             // 
@@ -358,17 +359,17 @@ namespace RiivoAutoBuilder
             this.optionBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OptionBoxClicked);
             this.optionBox.SelectedIndexChanged += new System.EventHandler(this.OptionBoxIndexChanged);
             // 
-            // patchIDBox
+            // patchidBox
             // 
-            this.patchIDBox.ContextMenuStrip = this.contextMenu;
-            this.patchIDBox.Enabled = false;
-            this.patchIDBox.FormattingEnabled = true;
-            this.patchIDBox.Location = new System.Drawing.Point(300, 42);
-            this.patchIDBox.Name = "patchIDBox";
-            this.patchIDBox.Size = new System.Drawing.Size(112, 186);
-            this.patchIDBox.TabIndex = 11;
-            this.patchIDBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PatchIDBoxClicked);
-            this.patchIDBox.SelectedIndexChanged += new System.EventHandler(this.PatchIDBoxIndexChanged);
+            this.patchidBox.ContextMenuStrip = this.contextMenu;
+            this.patchidBox.Enabled = false;
+            this.patchidBox.FormattingEnabled = true;
+            this.patchidBox.Location = new System.Drawing.Point(300, 42);
+            this.patchidBox.Name = "patchidBox";
+            this.patchidBox.Size = new System.Drawing.Size(112, 186);
+            this.patchidBox.TabIndex = 11;
+            this.patchidBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PatchidBoxClicked);
+            this.patchidBox.SelectedIndexChanged += new System.EventHandler(this.PatchidBoxIndexChanged);
             // 
             // label1
             // 
@@ -406,17 +407,17 @@ namespace RiivoAutoBuilder
             this.label5.TabIndex = 41;
             this.label5.Text = "Patches enabled for this choice";
             // 
-            // patchesBox
+            // patchBox
             // 
-            this.patchesBox.ContextMenuStrip = this.contextMenu;
-            this.patchesBox.Enabled = false;
-            this.patchesBox.FormattingEnabled = true;
-            this.patchesBox.Location = new System.Drawing.Point(12, 350);
-            this.patchesBox.Name = "patchesBox";
-            this.patchesBox.Size = new System.Drawing.Size(283, 82);
-            this.patchesBox.TabIndex = 28;
-            this.patchesBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PatchesBoxClicked);
-            this.patchesBox.SelectedIndexChanged += new System.EventHandler(this.PatchesBoxIndexChanged);
+            this.patchBox.ContextMenuStrip = this.contextMenu;
+            this.patchBox.Enabled = false;
+            this.patchBox.FormattingEnabled = true;
+            this.patchBox.Location = new System.Drawing.Point(12, 350);
+            this.patchBox.Name = "patchBox";
+            this.patchBox.Size = new System.Drawing.Size(283, 82);
+            this.patchBox.TabIndex = 28;
+            this.patchBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PatchBoxClicked);
+            this.patchBox.SelectedIndexChanged += new System.EventHandler(this.PatchBoxIndexChanged);
             // 
             // button1
             // 
@@ -554,14 +555,14 @@ namespace RiivoAutoBuilder
             this.ClientSize = new System.Drawing.Size(622, 465);
             this.Controls.Add(this.propertiesGroupBox);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.patchIDBox);
+            this.Controls.Add(this.patchidBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.sectionBox);
             this.Controls.Add(this.optionBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.choiceBox);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.patchesBox);
+            this.Controls.Add(this.patchBox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.menuStrip1);
@@ -594,13 +595,13 @@ namespace RiivoAutoBuilder
         private System.Windows.Forms.TextBox gameIDtextbox;
         private System.Windows.Forms.ListBox sectionBox;
         private System.Windows.Forms.ListBox optionBox;
-        private System.Windows.Forms.ListBox patchIDBox;
+        private System.Windows.Forms.ListBox patchidBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStripMenuItem advancedToolStripMenuItem;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ListBox patchesBox;
+        private System.Windows.Forms.ListBox patchBox;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem riivolutionDocumentationToolStripMenuItem;

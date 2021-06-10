@@ -22,28 +22,43 @@ namespace RiivoAutoBuilder
         }
 
         private string LastListBoxAccessed = null;
+        private List<int> PreviousSelectedIndexes;
 
-        private void PrepareForSaving()
+        /// <summary>
+        /// Read values in different controls and apply the changes to the XmlDocument loaded
+        /// </summary>
+        private void PrepareForSaving() 
         {
-            // read values in different controls and apply changes to riivolution xml
+            
             rii.GameID = gameIDtextbox.Text;
         }
-
+        /// <summary>
+        /// Fill controls with fresh data from the current XmlDocument loaded
+        /// </summary>
         private void PopulateControls()
         {
             gameIDtextbox.Text = rii.GameID;
             sectionBox.DataSource = rii.GetSections();
-            patchIDBox.DataSource = rii.GetPatchIDs();
+            patchidBox.DataSource = rii.GetPatchIDs();
+
+            sectionBox.SelectedIndex = rii.GetSelectedIndex(0);
+            optionBox.SelectedIndex = rii.GetSelectedIndex(1);
+            choiceBox.SelectedIndex = rii.GetSelectedIndex(2);
+            patchBox.SelectedIndex = rii.GetSelectedIndex(3);
+            patchidBox.SelectedIndex = rii.GetSelectedIndex(4);
+
         }
+        /// <summary>
+        /// Enable several controls after loading an XmlDocument successfully
+        /// </summary>
         private void PostLoadConfigControls()
         {
             gameIDtextbox.Enabled = true;
             sectionBox.Enabled = true;
-            patchIDBox.Enabled = true;
+            patchidBox.Enabled = true;
             saveToolStripMenuItem.Enabled = true;
             saveAsToolStripMenuItem.Enabled = true;
         }
-
         /// <summary>
         /// Checks if there have been changes made to the XmlDocument since the last save.
         /// Also brings up a MessageBox noting unsaved changes.
@@ -52,11 +67,11 @@ namespace RiivoAutoBuilder
         /// False: prevents caller from loading a new file.
         /// </summary>
         /// <returns></returns>
-        private bool ChangedSinceSaveCanProceed() 
+        private bool YouHaveUnsavedChanges() 
         {
             if (rii.ChangedSinceSave == true)
             {
-                var result = MessageBox.Show("You have unsaved changes, do you want to save?", "Issue", MessageBoxButtons.YesNoCancel);
+                var result = MessageBox.Show("You have unsaved changes, do you want to save?", "Warning", MessageBoxButtons.YesNoCancel);
                 if (result == DialogResult.Yes)
                 {
                     rii.Save();
@@ -96,11 +111,40 @@ namespace RiivoAutoBuilder
             return false;
         }
 
+        private void OpenCustomValueFormEditor(string whichNodeType)
+        {
+            EnterCustomValueForm ecvf = new EnterCustomValueForm();
+            ecvf.textboxvalue = rii.GetSelectedNodeName(whichNodeType);
+            ecvf.Setup(ecvf);
+            ecvf.ShowDialog();
+            string storedvalue = ecvf.textboxvalue;
+            if (ecvf.pressedConfirm == true)
+            {
+                try
+                {
+                    rii.EditSelectedNodeName(whichNodeType, storedvalue);
+                    rii.ChangedSinceSave = true;
+                    PreviousSelectedIndexes = rii.GetSelectedIndexList();
+                    PopulateControls();
+                }
+
+                catch
+                {
+                    Console.WriteLine("Error writing custom value");
+                }
+                ecvf.Dispose();
+            }
+            else
+            {
+                ecvf.Dispose();
+                return;
+            }
+        }
         // MenuStrip Event Handlers
 
         private void NewButtonClicked(object sender, EventArgs e)
         {
-            bool proceed = ChangedSinceSaveCanProceed();
+            bool proceed = YouHaveUnsavedChanges();
 
             if (proceed)
             {
@@ -115,7 +159,7 @@ namespace RiivoAutoBuilder
 
         private void OpenButtonClicked(object sender, EventArgs e)
         {
-            bool proceed = ChangedSinceSaveCanProceed();
+            bool proceed = YouHaveUnsavedChanges();
             if (proceed)
             {
                 string xmlfilepath;
@@ -163,8 +207,6 @@ namespace RiivoAutoBuilder
             sfd.Dispose();
         }
 
-        // About
-
         private new void HelpButtonClicked(object sender, EventArgs e)
         {
             MessageBox.Show("Credits: islender");
@@ -175,27 +217,27 @@ namespace RiivoAutoBuilder
         private void SectionBoxIndexChanged(object sender, EventArgs e)
         {
             choiceBox.Enabled = false;
-            patchesBox.Enabled = false;
+            patchBox.Enabled = false;
 
             ListBox.SelectedObjectCollection test = sectionBox.SelectedItems;
             if (test.Count == 0)
             {
                 optionBox.Enabled = false;
                 choiceBox.Enabled = false;
-                patchesBox.Enabled = false;
+                patchBox.Enabled = false;
 
                 return;
             }
             else
             {
-                if (rii.GrabSelectedIndex(0) != sectionBox.SelectedIndex)
+                if (rii.GetSelectedIndex(0) != sectionBox.SelectedIndex)
                 {
                     // update index of other controls to the default value/index (0) as they get autoselected. prevents a bug
-                    rii.UpdateSelectedIndex(1, optionBox.SelectedIndex);
-                    rii.UpdateSelectedIndex(2, choiceBox.SelectedIndex);
-                    rii.UpdateSelectedIndex(3, patchesBox.SelectedIndex);
+                    rii.SetSelectedIndex(1, optionBox.SelectedIndex);
+                    rii.SetSelectedIndex(2, choiceBox.SelectedIndex);
+                    rii.SetSelectedIndex(3, patchBox.SelectedIndex);
                 }
-                rii.UpdateSelectedIndex(0, sectionBox.SelectedIndex);
+                rii.SetSelectedIndex(0, sectionBox.SelectedIndex);
                 optionBox.DataSource = rii.GetOptions();
                 optionBox.Enabled = true;
 
@@ -212,25 +254,25 @@ namespace RiivoAutoBuilder
         private void OptionBoxIndexChanged(object sender, EventArgs e)
         {
 
-            patchesBox.Enabled = false;
+            patchBox.Enabled = false;
 
             ListBox.SelectedObjectCollection test = optionBox.SelectedItems;
             if (test.Count == 0)
             {
                 choiceBox.Enabled = false;
-                patchesBox.Enabled = false;
+                patchBox.Enabled = false;
 
                 return;
             }
             else
             {
-                if (rii.GrabSelectedIndex(0) != sectionBox.SelectedIndex)
+                if (rii.GetSelectedIndex(0) != sectionBox.SelectedIndex)
                 {
                     // update index of other controls to the default value/index (0) as they get autoselected. prevents a bug
-                    rii.UpdateSelectedIndex(2, choiceBox.SelectedIndex);
-                    rii.UpdateSelectedIndex(3, patchesBox.SelectedIndex);
+                    rii.SetSelectedIndex(2, choiceBox.SelectedIndex);
+                    rii.SetSelectedIndex(3, patchBox.SelectedIndex);
                 }
-                rii.UpdateSelectedIndex(1, optionBox.SelectedIndex);
+                rii.SetSelectedIndex(1, optionBox.SelectedIndex);
                 choiceBox.DataSource = rii.GetChoices();
                 choiceBox.Enabled = true;
             }
@@ -249,20 +291,20 @@ namespace RiivoAutoBuilder
             ListBox.SelectedObjectCollection test = choiceBox.SelectedItems;
             if (test.Count == 0)
             {
-                patchesBox.Enabled = false;
+                patchBox.Enabled = false;
 
                 return;
             }
             else
             {
-                if (rii.GrabSelectedIndex(0) != sectionBox.SelectedIndex)
+                if (rii.GetSelectedIndex(0) != sectionBox.SelectedIndex)
                 {
                     // update index of other controls to the default value/index (0) as they get autoselected. prevents a bug
-                    rii.UpdateSelectedIndex(3, patchesBox.SelectedIndex);
+                    rii.SetSelectedIndex(3, patchBox.SelectedIndex);
                 }
-                rii.UpdateSelectedIndex(2, choiceBox.SelectedIndex);
-                patchesBox.DataSource = rii.GetPatches();
-                patchesBox.Enabled = true;
+                rii.SetSelectedIndex(2, choiceBox.SelectedIndex);
+                patchBox.DataSource = rii.GetPatches();
+                patchBox.Enabled = true;
                 
             }
         }
@@ -272,45 +314,45 @@ namespace RiivoAutoBuilder
             LastListBoxAccessed = "choiceBox";
         }
 
-        // PatchesBox Event Handlers
+        // PatchBox Event Handlers
 
-        private void PatchesBoxIndexChanged(object sender, EventArgs e)
+        private void PatchBoxIndexChanged(object sender, EventArgs e)
         {
-            ListBox.SelectedObjectCollection test = patchesBox.SelectedItems;
+            ListBox.SelectedObjectCollection test = patchBox.SelectedItems;
             if (test.Count == 0)
             {
                 return;
             }
             else
             {
-                rii.UpdateSelectedIndex(3, patchesBox.SelectedIndex);
+                rii.SetSelectedIndex(3, patchBox.SelectedIndex);
             }
         }
 
-        private void PatchesBoxClicked(object sender, MouseEventArgs e)
+        private void PatchBoxClicked(object sender, MouseEventArgs e)
         {
-            LastListBoxAccessed = "patchesBox";
+            LastListBoxAccessed = "patchBox";
 
         }
 
-        // PatchIDBox Event Handlers
+        // PatchidBox Event Handlers
 
-        private void PatchIDBoxIndexChanged(object sender, EventArgs e)
+        private void PatchidBoxIndexChanged(object sender, EventArgs e)
         {
-            ListBox.SelectedObjectCollection test = patchIDBox.SelectedItems;
+            ListBox.SelectedObjectCollection test = patchidBox.SelectedItems;
             if (test.Count == 0)
             {
                 return;
             }
             else
             {
-                rii.UpdateSelectedIndex(4, patchIDBox.SelectedIndex);
+                rii.SetSelectedIndex(4, patchidBox.SelectedIndex);
             }
         }
 
-        private void PatchIDBoxClicked(object sender, MouseEventArgs e)
+        private void PatchidBoxClicked(object sender, MouseEventArgs e)
         {
-            LastListBoxAccessed = "patchIDBox";
+            LastListBoxAccessed = "patchidBox";
 
         }
 
@@ -326,161 +368,66 @@ namespace RiivoAutoBuilder
 
         private void ContextMenuEditPressed(object sender, EventArgs e)
         {
+            #region obsolete code (commented out)
+            /*
             if (LastListBoxAccessed == "sectionBox")
             {
-                EnterCustomValueForm ecvf = new EnterCustomValueForm();
-                ecvf.textboxvalue = rii.GetSelectedNodeName("section");
-                ecvf.Setup(ecvf);
-                ecvf.ShowDialog();
-                string storedvalue = ecvf.textboxvalue;
-                if (ecvf.pressedConfirm == true)
-                {
-                    try
-                    {
-                        rii.EditSelectedNodeName("section", storedvalue);
-                        rii.ChangedSinceSave = true;
-                        PopulateControls();
-                    }
-
-                    catch
-                    {
-                        Console.WriteLine("Error writing custom value");
-                    }
-                    ecvf.Dispose();
-                }
-                else
-                {
-                    ecvf.Dispose();
-                    return;
-                }
+                OpenCustomValueFormEditor("section");
             }
             else if (LastListBoxAccessed == "optionBox")
             {
-                EnterCustomValueForm ecvf = new EnterCustomValueForm();
-                ecvf.textboxvalue = rii.GetSelectedNodeName("option");
-                ecvf.Setup(ecvf);
-                ecvf.ShowDialog();
-                string storedvalue = ecvf.textboxvalue;
-                if (ecvf.pressedConfirm == true)
-                {
-                    try
-                    {
-                        rii.EditSelectedNodeName("option", storedvalue);
-                        rii.ChangedSinceSave = true;
-                        PopulateControls();
-                    }
-
-                    catch
-                    {
-                        Console.WriteLine("Error writing custom value");
-                    }
-                    ecvf.Dispose();
-                }
-                else
-                {
-                    ecvf.Dispose();
-                    return;
-                }
+                OpenCustomValueFormEditor("option");
             }
             else if (LastListBoxAccessed == "choiceBox")
             {
-                EnterCustomValueForm ecvf = new EnterCustomValueForm();
-                ecvf.textboxvalue = rii.GetSelectedNodeName("choice");
-                ecvf.Setup(ecvf);
-                ecvf.ShowDialog();
-                string storedvalue = ecvf.textboxvalue;
-                if (ecvf.pressedConfirm == true)
-                {
-                    try
-                    {
-                        rii.EditSelectedNodeName("choice", storedvalue);
-                        rii.ChangedSinceSave = true;
-                        PopulateControls();
-                    }
-
-                    catch
-                    {
-                        Console.WriteLine("Error writing custom value");
-                    }
-                    ecvf.Dispose();
-                }
-                else
-                {
-                    ecvf.Dispose();
-                    return;
-                }
+                OpenCustomValueFormEditor("choice");
             }
-            else if (LastListBoxAccessed == "patchesBox")
+            else if (LastListBoxAccessed == "patchBox")
             {
-                EnterCustomValueForm ecvf = new EnterCustomValueForm();
-                ecvf.textboxvalue = rii.GetSelectedNodeName("patch");
-                ecvf.Setup(ecvf);
-                ecvf.ShowDialog();
-                string storedvalue = ecvf.textboxvalue;
-                if (ecvf.pressedConfirm == true)
-                {
-                    try
-                    {
-                        rii.EditSelectedNodeName("patch", storedvalue);
-                        rii.ChangedSinceSave = true;
-                        PopulateControls();
-                    }
-
-                    catch
-                    {
-                        Console.WriteLine("Error writing custom value");
-                    }
-                    ecvf.Dispose();
-                }
-                else
-                {
-                    ecvf.Dispose();
-                    return;
-                }
+                OpenCustomValueFormEditor("patch");
             }
-            else if (LastListBoxAccessed == "patchIDBox")
+            else if (LastListBoxAccessed == "patchidBox")
             {
-                EnterCustomValueForm ecvf = new EnterCustomValueForm();
-                ecvf.textboxvalue = rii.GetSelectedNodeName("patchid");
-                ecvf.Setup(ecvf);
-                ecvf.ShowDialog();
-                string storedvalue = ecvf.textboxvalue;
-                if (ecvf.pressedConfirm == true)
-                {
-                    try
-                    {
-                        rii.EditSelectedNodeName("patchid", storedvalue);
-                        rii.ChangedSinceSave = true;
-                        PopulateControls();
-                    }
-
-                    catch
-                    {
-                        Console.WriteLine("Error writing custom value");
-                    }
-                    ecvf.Dispose();
-                }
-                else
-                {
-                    ecvf.Dispose();
-                    return;
-                }
+                OpenCustomValueFormEditor("patchid");
             }
             else
             {
                 return;
-            } 
+            }*/
+            #endregion
+
+            OpenCustomValueFormEditor(LastListBoxAccessed.Replace("Box", ""));
         }
 
         private void ContextMenuAddPressed(object sender, EventArgs e)
         {
             Console.WriteLine("add node pressed");
-
+            rii.AddNewNode("section");
+            PopulateControls();
         }
 
         private void ContextMenuRemovePressed(object sender, EventArgs e)
         {
             Console.WriteLine("remove node pressed");
+
+            var result = MessageBox.Show("Are you sure you want to delete this node and all subnodes?","Warning", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    rii.DeleteSelectedNode("section");
+                    rii.ChangedSinceSave = true;
+                    PopulateControls();
+                }
+                catch
+                {
+                    Console.WriteLine("Error deleting selected node");
+                }
+            }
+            else if (result == DialogResult.No)
+            {
+
+            }
 
         }
 
@@ -495,12 +442,20 @@ namespace RiivoAutoBuilder
             Console.WriteLine("move down pressed");
 
         }
+        //
 
+        // Global Properties events
+        private void GameIDTextChanged(object sender, EventArgs e)
+        {
+            rii.ChangedSinceSave = true;
+        }
         // everything under here is for debugging
 
         private void PrintToConsole(object sender, EventArgs e)
         {
             rii.PrintToConsole();
         }
+
+
     }
 }

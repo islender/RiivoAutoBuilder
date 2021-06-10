@@ -16,5 +16,16 @@ namespace RiivoAutoBuilder.Forms
         {
             InitializeComponent();
         }
+
+        public string textboxvalue;
+        public bool pressedConfirm = false;
+        PatchEditorForm thisform;
+
+        public void Setup(PatchEditorForm form)
+        {
+            thisform = form;
+            textBox1.Text = textboxvalue;
+        }
+
     }
 }

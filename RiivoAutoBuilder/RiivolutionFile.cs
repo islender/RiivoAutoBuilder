@@ -11,20 +11,20 @@ namespace RiivoAutoBuilder
 {
     class RiivolutionFile
     {
-        #region XML and other nodes
+        // XML and other nodes
         private XmlDocument xml = new XmlDocument();
         private XmlNode wiidisc;
         private XmlNode options;
         private XmlNode id;
-        #endregion
+        //
 
-        #region Main nodes collections
+        // Main nodes collections
         private XmlNodeList sectionlist;
         private XmlNodeList optionslist;
         private XmlNodeList choiceslist;
         private XmlNodeList patcheslist;
         private XmlNodeList patchidslist;
-        #endregion
+        //
 
         #region New node reading system testing
         public List<string> section_collection = new List<string>();
@@ -90,13 +90,15 @@ namespace RiivoAutoBuilder
             patcheslist = options.SelectNodes("./descendant::patch"); 
             patchidslist = wiidisc.SelectNodes("patch");
             #endregion
+
+            //XmlNode testnode = options.SelectSingleNode("section").Clone();
+            //options.AppendChild(testnode);
         }
         public void Save()
         {
             try
             {
                 xml.Save(newFilePath);
-                MessageBox.Show("Saving successful!");
                 changedSinceLastSave = false;
             }
             catch (NullReferenceException)
@@ -118,14 +120,9 @@ namespace RiivoAutoBuilder
         #endregion
 
         // Selected index stuff
-        public void UpdateSelectedIndex(int index, int value)
-        {
-            selectedIndexes.Insert(index, value);
-        }
-        public int GrabSelectedIndex(int index)
-        {
-            return selectedIndexes[index];
-        }
+        public void SetSelectedIndex(int index, int value) { selectedIndexes.Insert(index, value); }
+        public int GetSelectedIndex(int index) { return selectedIndexes[index]; }
+        public List<int> GetSelectedIndexList() { return selectedIndexes; }
 
         // Debugging methods
         public void PrintToConsole()
@@ -134,6 +131,7 @@ namespace RiivoAutoBuilder
         }
         //
 
+        #region Obsolete Methods
         // Tree traversal methods
         [Obsolete]
         public string GetFirstAttributeName(XmlNode node)
@@ -241,10 +239,10 @@ namespace RiivoAutoBuilder
 
         }
         //
+        #endregion
 
-
-        // Code for getting and editing nodes and stuff
-        public XmlNode FindEditableNode(string nodetype)
+        // Code for getting and editing nodes and adding and removing them and stuff
+        public XmlNode FindSelectedNode(string nodetype)
         {
             if (nodetype == "section")
             {
@@ -296,19 +294,72 @@ namespace RiivoAutoBuilder
         }
         public void EditSelectedNodeName(string nodetype, string value)
         {
-            XmlNode node = FindEditableNode(nodetype); // nodetype determines what the name of the node is for editing, example: patch or section
+            XmlNode node = FindSelectedNode(nodetype); // nodetype determines what the name of the node is for editing, example: patch or section
             XmlAttributeCollection attribs = node.Attributes;
             XmlNode attrib = attribs.Item(0);
             attrib.InnerText = value;
         }
         public string GetSelectedNodeName(string nodetype)
         {
-            XmlNode node = FindEditableNode(nodetype);
+            XmlNode node = FindSelectedNode(nodetype);
             XmlAttributeCollection attribs = node.Attributes;
             XmlNode attrib = attribs.Item(0);
             return attrib.InnerText;
         }
-        //
+        public void DeleteSelectedNode(string nodetype)
+        {
+            if (nodetype == "section")
+            {
+                options.RemoveChild(sectionlist.Item(selectedIndexes[0]));
+            }
+            else if (nodetype == "option")
+            {
+                //xml.RemoveChild();
+            }
+            else if (nodetype == "choice")
+            {
+                //xml.RemoveChild();
+            }
+            else if (nodetype == "patch")
+            {
+                //xml.RemoveChild();
+            }
+            else if (nodetype == "patchid")
+            {
+                //xml.RemoveChild();
+            }
+            
+        }
+        public void AddNewNode(string nodetype)
+        {
+            if (nodetype == "section")
+            {
+                XmlDocument temp = new XmlDocument();
+                string loadthis = "<section name=\"My Hack Page\"></section>";
+                temp.LoadXml(loadthis);
+                XmlNode insertthis = xml.ImportNode(temp.SelectSingleNode("section"),false);
+                options.AppendChild(insertthis);
+                return;
+            }
+            else if (nodetype == "option")
+            {
+
+            }
+            else if (nodetype == "choice")
+            {
+
+            }
+            else if (nodetype == "patch")
+            {
+
+            }
+            else if (nodetype == "patchid")
+            {
+
+            }
+        }
+
+
 
         // Misc properties
         public string NewFilePath
