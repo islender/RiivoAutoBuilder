@@ -26,18 +26,13 @@ namespace RiivoAutoBuilder
         private XmlNodeList patchidslist;
         //
 
-        #region New node reading system testing
+        // New node reading system testing
         public List<string> section_collection = new List<string>();
         public List<string> option_collection = new List<string>();
         public List<string> choice_collection = new List<string>();
         public List<string> patch_collection = new List<string>();
         public List<string> patchid_collection = new List<string>();
-        // show how many of each node there are
-        public int section_count;
-        public int option_count;
-        public int choice_count;
-        public int patch_count;
-        #endregion
+
 
         #region Misc variables
         private string newFilePath;
@@ -130,6 +125,8 @@ namespace RiivoAutoBuilder
 
         #region Obsolete Methods
         // Tree traversal methods
+
+        /*
         [Obsolete]
         public string GetFirstAttributeName(XmlNode node)
         {
@@ -230,12 +227,8 @@ namespace RiivoAutoBuilder
 
 
         }
-        [Obsolete]
-        public void EditTraversal(XmlNode node,int nodeindex,string nodename)
-        {
-
-        }
         //
+        */
         #endregion
 
         // Code for getting and editing nodes and adding and removing them and stuff
@@ -284,7 +277,7 @@ namespace RiivoAutoBuilder
             }
             else 
             {
-                Console.WriteLine("invalid node type, aborting...");
+                MessageBox.Show("Invalid node type, aborting...","Error");
                 return null;
             }
             
@@ -308,7 +301,6 @@ namespace RiivoAutoBuilder
             if (nodetype == "section")
             {
                 options.RemoveChild(FindSelectedNode("section"));
-                
             }
             else if (nodetype == "option")
             {
@@ -334,7 +326,7 @@ namespace RiivoAutoBuilder
 
             if (nodetype == "section")
             {
-                string loadthis = "<section name=\"My Hack Page\"></section>";
+                string loadthis = "<section name=\"NewSection\"></section>";
                 temp.LoadXml(loadthis);
                 XmlNode insertthis = xml.ImportNode(temp.SelectSingleNode("section"),false);
                 //
@@ -342,7 +334,7 @@ namespace RiivoAutoBuilder
             }
             else if (nodetype == "option")
             {
-                string loadthis = "<option name=\"Enable My Hack?\"></option>";
+                string loadthis = "<option name=\"NewOption\"></option>";
                 temp.LoadXml(loadthis);
                 XmlNode insertthis = xml.ImportNode(temp.SelectSingleNode("option"), false);
                 //
@@ -351,7 +343,7 @@ namespace RiivoAutoBuilder
             }
             else if (nodetype == "choice")
             {
-                string loadthis = "<choice name=\"Enabled\"></choice>";
+                string loadthis = "<choice name=\"NewChoice\"></choice>";
                 temp.LoadXml(loadthis);
                 XmlNode insertthis = xml.ImportNode(temp.SelectSingleNode("choice"), false);
                 //

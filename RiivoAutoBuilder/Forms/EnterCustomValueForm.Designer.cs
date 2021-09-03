@@ -87,6 +87,8 @@ namespace RiivoAutoBuilder.Forms
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EnterCustomValueForm";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Editing...";
             this.ResumeLayout(false);
             this.PerformLayout();

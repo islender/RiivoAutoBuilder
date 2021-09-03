@@ -77,27 +77,24 @@ namespace RiivoAutoBuilder
                     rii.Save();
                     if (rii.ChangedSinceSave == false)
                     {
-                        Console.WriteLine("Saved changes");
                         rii.NewFilePath = null;
                         return true;
                     }
                     else
                     {
-                        Console.WriteLine("Failed to save changes");
+                        MessageBox.Show("Failed to save changes","Error");
                         return false;
                     }
 
                 }
                 if (result == DialogResult.No) // no code because it will jump to the try catch statements
                 {
-                    Console.WriteLine("Discarded changes");
                     rii.NewFilePath = null;
                     rii.ChangedSinceSave = false;
                     return true;
                 }
                 if (result == DialogResult.Cancel) // if user presses "x" or "cancel"
                 {
-                    Console.WriteLine("Cancelled");
                     return false;
                 }
                 return false;
@@ -130,7 +127,7 @@ namespace RiivoAutoBuilder
 
                 catch
                 {
-                    Console.WriteLine("Error writing custom value");
+                    MessageBox.Show("Error writing custom value","Error");
                 }
                 ecvf.Dispose();
             }
@@ -210,6 +207,11 @@ namespace RiivoAutoBuilder
         private new void HelpButtonClicked(object sender, EventArgs e)
         {
             MessageBox.Show("Credits: islender");
+        }
+
+        private void IsoBuilderButtonClicked(object sender, EventArgs e)
+        {
+
         }
 
         // SectionBox Event Handlers
@@ -361,7 +363,6 @@ namespace RiivoAutoBuilder
         private void ContextMenuOpened(object sender, CancelEventArgs e)
         {
             Control control = ((ContextMenuStrip)(sender)).SourceControl;
-            // Console.WriteLine("context menu opened on: {0}",control.Name.ToString());
             LastListBoxAccessed = control.Name.ToString();
             
         }
@@ -395,8 +396,20 @@ namespace RiivoAutoBuilder
                 return;
             }*/
             #endregion
+            if (LastListBoxAccessed == "patchidBox")
+            {
 
-            OpenCustomValueFormEditor(LastListBoxAccessed.Replace("Box", ""));
+
+                PatchEditorForm pef = new PatchEditorForm();
+                pef.Setup(pef, rii.FindSelectedNode("patchid"));
+                pef.ShowDialog();
+            }
+            else
+            {
+                OpenCustomValueFormEditor(LastListBoxAccessed.Replace("Box", ""));
+            }
+            
+            
         }
 
         private void ContextMenuAddPressed(object sender, EventArgs e)
@@ -408,7 +421,7 @@ namespace RiivoAutoBuilder
             }
             catch
             {
-                Console.WriteLine("Error adding a new node to this category");
+                MessageBox.Show("Error adding a new node to this category","Error");
             }
             PopulateControls();
         }
@@ -425,7 +438,7 @@ namespace RiivoAutoBuilder
                 }
                 catch
                 {
-                    Console.WriteLine("Error deleting selected node");
+                    MessageBox.Show("Error deleting selected node","Error");
                 }
                 PopulateControls();
             }
@@ -438,13 +451,12 @@ namespace RiivoAutoBuilder
 
         private void ContextMenuMoveUpPressed(object sender, EventArgs e)
         {
-            Console.WriteLine("move up pressed");
+
 
         }
 
         private void ContextMenuMoveDownPressed(object sender, EventArgs e)
         {
-            Console.WriteLine("move down pressed");
 
         }
         //
@@ -460,7 +472,6 @@ namespace RiivoAutoBuilder
         {
             rii.PrintToConsole();
         }
-
 
     }
 }

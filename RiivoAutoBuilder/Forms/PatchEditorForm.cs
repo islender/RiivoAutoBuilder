@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace RiivoAutoBuilder.Forms
 {
@@ -17,15 +18,22 @@ namespace RiivoAutoBuilder.Forms
             InitializeComponent();
         }
 
-        public string textboxvalue;
         public bool pressedConfirm = false;
+
+        private XmlNode currentnode;
+        private XmlAttributeCollection patchattributes; 
+
         PatchEditorForm thisform;
 
-        public void Setup(PatchEditorForm form)
+        public void Setup(PatchEditorForm form, XmlNode currentnode)
         {
             thisform = form;
-            textBox1.Text = textboxvalue;
+            patchattributes = currentnode.Attributes;
+            patchIDName.Text = patchattributes.GetNamedItem("id").Value;
+
+
         }
+
 
     }
 }

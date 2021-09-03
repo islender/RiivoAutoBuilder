@@ -14,6 +14,7 @@ namespace RiivoAutoBuilder.Forms
     {
         public EnterCustomValueForm()
         {
+
             InitializeComponent();
         }
 
