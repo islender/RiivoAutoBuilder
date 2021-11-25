@@ -1,5 +1,9 @@
 # RiivoAutoBuilder
 
+# THIS IS UNFINISHED AND PURELY FOR EDUCATIONAL PURPOSES
+
+aka don't use it because it's not good enough for fully fledged editing yet
+
 An easy-to-use editor for Riivolution XML files, with some extra perks. 
 
 >ISO builder: will build an ISO or WBFS file out of a Riivolution script, and include all the necessary patches
