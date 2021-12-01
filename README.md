@@ -1,6 +1,6 @@
 # RiivoAutoBuilder
 
-# THIS IS UNFINISHED AND PURELY FOR EDUCATIONAL PURPOSES
+# THIS IS UNFINISHED and i dont recommend using it yet, but it is usuable to an extent
 
 aka don't use it because it's not good enough for fully fledged editing yet
 
