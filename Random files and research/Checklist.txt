@@ -1,0 +1,13 @@
++ = Done
+- = Not done
+> = In-progress
+
+
+
+
+> Load XML file into XMLDocument
+- Read through nodes and display <options> ones on-screen
+- Read Riivolution XML nodes and understand the structure
+- Select patch options in Riivolution to patch an ISO with
+- Choose ISO or WBFS as output (WIT)
+- Apply ASM patches through WIT dolpatch

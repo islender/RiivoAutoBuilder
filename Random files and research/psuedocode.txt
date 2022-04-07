@@ -1,0 +1,31 @@
+option_array = []
+patch_array = []
+section_array = []
+choice_array = []
+patchid_array = []
+unknown_nodes_array = []
+
+node = wiidisc
+search(wiidisc)
+
+def search(node)
+	for i in range(node_children)
+		try
+			search(node_children[i])
+		except
+			print("reached end of current traversal, next...")
+		if node == section
+			section_array.append(node)
+		if node == option
+			option_array.append(node)
+		if node == choice
+			choice_array.append(node)
+		if node == patch
+			patch_array.append(node)
+		return
+
+
+
+
+def changevalue(xmldocument, nodeindex, nodename)
+

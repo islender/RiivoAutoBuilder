@@ -1,0 +1,40 @@
+<wiidisc version="1" root="">
+  <id game="RMG">
+    <region type="E" />
+    <region type="P" />
+    <region type="J" />
+  </id>
+  <options>
+    <section name="Epic Starship Mario Galaxy 2: Electric Bugaloo">
+      <option name="SSG (original)">
+        <choice name="dev planets">
+          <patch id="Luigi" />
+        </choice>
+      </option>
+    </section>
+    <section name="Crash debugger">
+      <option name="crash debugger">
+        <choice name="Enabled">
+          <patch id="crashdebug" />
+        </choice>
+      </option>
+    </section>
+    <section name="SMG TLL">
+      <option name="Enable SMGTLL?">
+        <choice name="Enabled">
+          <patch id="smgtllpatches" />
+        </choice>
+      </option>
+    </section>
+  </options>
+  <patch id="Luigi">
+    <memory offset="0x80002AE0" value="46696C6553656C65637400" />
+    <memory offset="0x804D3040" value="38600001" />
+    <memory offset="0x804D3044" value="4E800020" />
+    <memory offset="0x804514A8" value="3C608000" />
+    <memory offset="0x804514AC" value="60632AE0" />
+    <memory offset="0x804514B0" value="4BC050C1" />
+  </patch>
+  <patch id="smgtllpatches" />
+  <patch id="crashdebug" />
+</wiidisc>

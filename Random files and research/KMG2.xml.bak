@@ -1,0 +1,60 @@
+<wiidisc version="1" root="">
+  <id game="SB4" />
+  <options>
+    <section name="Kaizo Mario Galaxy 2">
+      <option name="Choose Your Gamemode:">
+        <choice name="Mario Mode">
+          <patch id="Mario" />
+        </choice>
+        <choice name="Luigi Mode">
+          <patch id="Mario" />
+          <patch id="Luigi" />
+        </choice>
+      </option>
+    </section>
+  </options>
+  <patch id="Luigi">
+    <memory offset="0x80002AE0" value="46696C6553656C65637400"/>
+    <memory offset="0x804D3040" value="38600001"/>
+    <memory offset="0x804D3044" value="4E800020"/>
+    <memory offset="0x804514A8" value="3C608000"/>
+    <memory offset="0x804514AC" value="60632AE0"/>
+    <memory offset="0x804514B0" value="4BC050C1"/>
+  </patch>
+  <patch id="Mario">
+    <folder disc="/" external="/KMG2/" />
+    <folder disc="/StageData/" external="/KMG2/StageData/" create="true" />
+    <folder disc="/ObjectData/" external="/KMG2/ObjectData/" create="true" />
+    <folder disc="/LayoutData/" external="/KMG2/LayoutData/" create="true" />
+    <folder disc="/LocalizeData/" external="/KMG2/LocalizeData/" create="true" />
+    <folder disc="/AudioRes/" external="/KMG2/AudioRes/" create="true"/>
+    <folder disc="/ParticleData/" external="/KMG2/ParticleData/" create="true"/>
+    <savegame external="/KMG2/SaveData/GameSave" clone="false" />
+    <memory offset="0x80001CE0" valuefile="/KMG2/ASM/ObjNames.bin"/>
+    <memory offset="0x80001E00" valuefile="/KMG2/ASM/BlueChip.bin"/>
+    <memory offset="0x8064B1E0" value="80001E0C80001ED0"/>
+    <memory offset="0x8064B1E8" value="80001E0080001F20"/>
+    <memory offset="0x8028389C" value="4BD7E594"/>
+    <memory offset="0x80284E44" value="4BD7D04C"/>
+    <memory offset="0x80284E80" value="4BD7D030"/>
+    <memory offset="0x806F0894" value="80001E70" original="8045A918"/>
+    <memory offset="0x806F0074" value="80001E70" original="8045A918"/>
+    <memory offset="0x806F5F94" value="80001E70" original="8045A918"/>
+    <memory offset="0x806F0B30" value="80001E70" original="8045A918"/>
+    <memory offset="0x800CB6F8" value="60000000" />
+    <memory offset="0x800AB28C" value="60000000" />
+    <memory offset="0x800B2414" value="60000000" />
+    <memory offset="0x800B257C" value="38600001" />
+    <memory offset="0x800B2574" value="60000000" />
+    <memory offset="0x800B257C" value="60000000" />
+    <memory offset="0x800F9CDC" value="38600000" />
+    <memory offset="0x800F77D0" value="38E00000" />
+    <memory offset="0x800EDBC4" value="7F83E3784BF5F7194BFFFF8C" />
+    <memory offset="0x800EDB54" value="480000703961004048540659800100447C0803A6382100404E800020" />
+    <memory offset="0x800F0AD0" value="4BFC61F4" />
+    <memory offset="0x800B6CC0" value="42C80000480C0BED38610014389D000C4BF554813C60800B38636CC0C0030000C02100247FA3EB7838810014EC01002AD00100244BF966FD48039DDC" />
+    <memory offset="0x804D8650" value="38600000" original="9421FFF0" />
+    <memory offset="0x804D8654" value="4E800020" original="7C0802A6" />
+    <memory offset="0x800EFEF4" value="7F83E3784BF18DD92C030000418201307F83E3787FC4F3784BF302B5809C01107F83E3787FC5F37838C0000038E000014BF1BC4D48000064" />
+  </patch>
+</wiidisc>
