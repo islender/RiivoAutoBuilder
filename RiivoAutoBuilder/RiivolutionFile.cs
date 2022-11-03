@@ -298,27 +298,40 @@ namespace RiivoAutoBuilder
         }
         public void DeleteSelectedNode(string nodetype)
         {
-            if (nodetype == "section")
+            
+            switch (nodetype)
             {
-                options.RemoveChild(FindSelectedNode("section"));
+
+                case "section":
+
+                    options.RemoveChild(FindSelectedNode("section"));
+                    break;
+                case "option":
+                    FindSelectedNode("section").RemoveChild(FindSelectedNode("option"));
+
+
+                    break;
+                case "choice":
+
+                    FindSelectedNode("option").RemoveChild(FindSelectedNode("choice"));
+
+                    break;
+
+                case "patch":
+                    FindSelectedNode("choice").RemoveChild(FindSelectedNode("patch"));
+
+                    break;
+
+
+                case "patchid":
+
+                    wiidisc.RemoveChild(patchidslist.Item(selectedIndexes[4]));
+                    patchidslist = wiidisc.SelectNodes("patch");
+
+                    break;
+
             }
-            else if (nodetype == "option")
-            {
-                FindSelectedNode("section").RemoveChild(FindSelectedNode("option"));
-            }
-            else if (nodetype == "choice")
-            {
-                FindSelectedNode("option").RemoveChild(FindSelectedNode("choice"));
-            }
-            else if (nodetype == "patch")
-            {
-                FindSelectedNode("choice").RemoveChild(FindSelectedNode("patch"));
-            }
-            else if (nodetype == "patchid")
-            {
-                wiidisc.RemoveChild(patchidslist.Item(selectedIndexes[4]));
-                patchidslist = wiidisc.SelectNodes("patch");
-            }
+
         }
         public void AddNewNode(string nodetype)
         {
